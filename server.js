@@ -15,6 +15,7 @@ const keys = require("./config/keys");
 
 //Bringing in routes
 const users = require("./routes/users");
+const profile = require("./routes/profile");
 
 //bodypaser middleware to access req.body object
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,6 +29,7 @@ require("./config/passport.js")(passport);
 
 //Assigning routes
 app.use("/users", users);
+app.use("/profile", profile);
 
 //Making a connection to the mongoDB database
 mongoose

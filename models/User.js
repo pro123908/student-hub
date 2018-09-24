@@ -15,21 +15,6 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  university: {
-    type: String
-  },
-  department: {
-    type: String
-  },
-  year: {
-    type: String
-  },
-  semester: {
-    type: String
-  },
-  phone: {
-    type: Number
-  },
   Date: {
     type: Date,
     default: Date.now

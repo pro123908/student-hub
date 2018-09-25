@@ -53,6 +53,10 @@ const profileSchema = new Schema({
         },
         classesLeftDate: [
           {
+            left: {
+              type: Number,
+              required: true
+            },
             date: {
               type: Date,
               default: Date.now

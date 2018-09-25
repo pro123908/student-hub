@@ -5,13 +5,21 @@ const passport = require("passport");
 const User = require("../models/User");
 const Profile = require("../models/Profile");
 
+const validateProfileInputs = require("../validation/profile");
+const validateCourseInputs = require("../validation/course");
+
 // @route POST /profile/
-// @desc creates profile
+// @desc creates/updates profile
 // @access Private
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateProfileInputs(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     profileFields = {};
     profileFields.user = req.user.id;
 
@@ -32,7 +40,8 @@ router.post(
       } else {
         Profile.findOne({ handle: profileFields.handle }).then(profile => {
           if (profile) {
-            return res.status(400).json({ handle: "Handle Already Exists" });
+            errors.handle = "Handle Already Exists";
+            return res.status(400).json(errors);
           }
 
           new Profile(profileFields).save().then(profile => res.json(profile));
@@ -77,6 +86,11 @@ router.post(
   "/course/add",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validateCourseInputs(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
     Profile.findOne({ user: req.user.id })
       .then(profile => {
         const newCourse = {
@@ -121,18 +135,31 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id }).then(profile => {
-      const course = profile.courses.filter(
-        item => item.id === req.params.courseID
-      );
-
-      const attendance = {};
-      attendance.classesHeld = req.body.held;
-      attendance.classesTaken = req.body.taken;
-      attendance.classesLeft = req.body.left;
+      // const course = profile.courses.filter(
+      //   item => item.id === req.params.courseID
+      // );
 
       const courseIndex = profile.courses
         .map(item => item.id)
         .indexOf(req.params.courseID);
+
+      let record = profile.courses[courseIndex].attendance;
+
+      const attendance = {};
+
+      if (record.classesHeld) {
+        attendance.classesHeld = record.classesHeld + Number(req.body.held);
+        attendance.classesTaken = record.classesTaken + Number(req.body.taken);
+        attendance.classesLeft = record.classesLeft + Number(req.body.left);
+      } else {
+        attendance.classesHeld = Number(req.body.held);
+        attendance.classesTaken = Number(req.body.taken);
+        attendance.classesLeft = Number(req.body.left);
+      }
+      if (Number(req.body.left)) {
+        record.classesLeftDate.unshift({ left: Number(req.body.left) });
+        attendance.classesLeftDate = record.classesLeftDate;
+      }
 
       profile.courses[courseIndex].attendance = attendance;
       profile.save().then(profile => res.json(profile));

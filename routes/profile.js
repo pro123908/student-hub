@@ -59,11 +59,13 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name"])
+      .populate("user", ["name", "avatar", "email"])
       .then(profile => {
         if (profile) {
           const userProfile = {
             name: profile.user.name,
+            email: profile.user.email,
+            avatar: profile.user.avatar,
             handle: profile.handle,
             university: profile.university,
             department: profile.department,

@@ -12,6 +12,8 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
+    let hubLink;
+    hubLink = isAuthenticated ? "/dashboard" : "/";
     const guestLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
@@ -30,6 +32,11 @@ class Navbar extends Component {
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
+          <Link to="/profile" className="nav-link">
+            Profile
+          </Link>
+        </li>
+        <li className="nav-item">
           <a href="" onClick={this.onLogout.bind(this)} className="nav-link">
             Logout
           </a>
@@ -40,7 +47,7 @@ class Navbar extends Component {
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand" to={hubLink}>
             Student Hub
           </Link>
           <button
@@ -53,15 +60,6 @@ class Navbar extends Component {
           </button>
 
           <div className="collapse navbar-collapse" id="mobile-nav">
-            {/* <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <a className="nav-link" href="profiles.html">
-                  {" "}
-                  Developers
-                </a>
-              </li>
-            </ul> */}
-
             {isAuthenticated ? authLinks : guestLinks}
           </div>
         </div>

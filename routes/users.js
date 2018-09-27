@@ -2,7 +2,7 @@
 const express = require("express");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const passport = require("passport");
+const gravatar = require("gravatar");
 const router = express.Router();
 
 const keys = require("../config/keys");
@@ -32,9 +32,15 @@ router.post("/register", (req, res) => {
       errors.email = "Email Already Exists";
       return res.status(400).json(errors);
     } else {
+      const avatar = gravatar.url(req.body.email, {
+        s: "200",
+        r: "pg",
+        d: "mm"
+      });
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
+        avatar: avatar,
         password: req.body.password
       });
 
@@ -98,66 +104,6 @@ router.post("/login", (req, res) => {
     }
   });
 });
-
-// @route POST /users/info/update
-// @desc Updating user info
-// @access Private
-router.post(
-  "/info/update",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    // const { errors, isValid } = validateUserInfoInputs(req.body);
-
-    const userInfo = {};
-    if (req.body.university) userInfo.university = req.body.university;
-    if (req.body.department) userInfo.department = req.body.department;
-    if (req.body.year) userInfo.year = req.body.year;
-    if (req.body.semester) userInfo.semester = req.body.semester;
-    if (req.body.phone) userInfo.phone = req.body.phone;
-
-    User.findOneAndUpdate(
-      { email: req.user.email },
-      { $set: userInfo },
-      { new: true }
-    )
-      .then(user => {
-        res.json(user);
-      })
-      .catch(err => console.log(err));
-  }
-);
-
-// @route GET /users/info
-// @desc Get user info
-// @access Private
-router.get(
-  "/info",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    User.findOne({ email: req.user.email })
-      .then(user => {
-        const userInfo = {
-          name: user.name,
-          email: user.email,
-          university: user.university,
-          department: user.department,
-          year: user.year,
-          semester: user.semester,
-          phone: user.phone
-        };
-        res.json(userInfo);
-      })
-      .catch(err => console.log(err));
-  }
-);
-
-router.get(
-  "/protect",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.send("Protected Route");
-  }
-);
 
 //Exporting the router
 module.exports = router;

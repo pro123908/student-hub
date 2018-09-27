@@ -28,11 +28,7 @@ module.exports = data => {
     errors.semester = "Semester Field is required";
   }
 
-  if (isEmpty(data.phone)) {
-    errors.phone = "Phone Field is required";
-  }
-
-  if (!errors.phone && !validator.isNumeric(data.phone)) {
+  if (!isEmpty(data.phone) && !validator.isNumeric(data.phone.toString())) {
     errors.phone = "Invalid Phone Number";
   }
 

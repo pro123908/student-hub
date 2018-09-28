@@ -1,7 +1,13 @@
-import { GET_PROFILE, PROFILE_LOADING } from "../actions/types";
+import {
+  GET_PROFILE,
+  PROFILE_LOADING,
+  GET_COURSES,
+  COURSES_LOADING
+} from "../actions/types";
 
 const initialState = {
   profile: null,
+  courses: null,
   loading: false
 };
 
@@ -17,6 +23,17 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case COURSES_LOADING:
+      return {
+        ...state,
+        loading: true
+      };
+    case GET_COURSES:
+      return {
+        ...state,
+        courses: action.payload,
+        loading: false
       };
 
     default:

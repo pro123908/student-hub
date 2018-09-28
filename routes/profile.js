@@ -113,11 +113,11 @@ router.post(
   }
 );
 
-// @route GET profile/course/:courseID
+// @route GET profile/courses/:courseID
 // @desc Get course by ID
 // @access Private
 router.get(
-  "/course/:courseID",
+  "/courses/:courseID",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id }).then(profile => {
@@ -126,6 +126,27 @@ router.get(
       );
       res.json(course);
     });
+  }
+);
+
+// @route GET profile/courses/
+// @desc Get all courses
+// @access Private
+router.get(
+  "/courses/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const errors = {};
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        if (!profile.courses) {
+          errors.courses = "No Course Added";
+          return res.status(404).json(errors);
+        }
+        res.json(profile.courses);
+      })
+      .catch(err => res.status(400).json({ noprofile: "No Profile" }));
   }
 );
 

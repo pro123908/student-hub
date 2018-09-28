@@ -1,4 +1,4 @@
-import { GET_ERRORS, GET_PROFILE, PROFILE_LOADING } from "./types";
+import { GET_ERRORS, GET_PROFILE, PROFILE_LOADING, GET_COURSES } from "./types";
 import axios from "axios";
 
 export const createProfile = (profileData, history) => dispatch => {
@@ -29,6 +29,35 @@ export const getProfile = () => dispatch => {
       dispatch({
         type: GET_PROFILE,
         payload: {}
+      })
+    );
+};
+
+export const addCourse = (courseData, history) => dispatch => {
+  axios
+    .post("/profile/course/add", courseData)
+    .then(res => history.push("/profile/courses"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const getCourses = () => dispatch => {
+  axios
+    .get("/profile/courses")
+    .then(res =>
+      dispatch({
+        type: GET_COURSES,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_COURSES,
+        payload: null
       })
     );
 };

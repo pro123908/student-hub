@@ -17,6 +17,9 @@ import CreateProfile from "./components/profile/CreateProfile";
 import editProfile from "./components/profile/editProfile";
 import Profile from "./components/profile/Profile";
 
+import AddCourse from "./components/course/AddCourse";
+import Courses from "./components/course/Courses";
+
 import store from "./store";
 
 import setAuthToken from "./utils/setAuthToken";
@@ -66,6 +69,16 @@ class App extends Component {
               </Switch>
               <Switch>
                 <PrivateRoute exact path="/profile" component={Profile} />
+              </Switch>
+              <Switch>
+                <PrivateRoute exact path="/addCourse" component={AddCourse} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/profile/courses"
+                  component={Courses}
+                />
               </Switch>
             </div>
             <Footer />

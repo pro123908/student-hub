@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { getCourses } from "../../actions/profileActions";
+import { getCourses, deleteCourse } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 import CourseItem from "./CourseItem";
 
 class Courses extends Component {
   componentDidMount() {
     this.props.getCourses();
+  }
+
+  onDelete(id) {
+    this.props.deleteCourse(id);
   }
 
   render() {
@@ -25,15 +29,26 @@ class Courses extends Component {
     } else {
       if (Object.keys(courses).length > 0) {
         const allCourses = courses.map((course, index) => (
-          <CourseItem key={index} course={course} index={index} />
+          <CourseItem
+            key={course._id}
+            course={course}
+            index={index}
+            onDelete={this.onDelete.bind(this)}
+          />
         ));
 
         coursesContent = (
           <div>
             <div className="row">
-              <h2 className="col-md-10 mb-4">Courses</h2>
-              <div className="col-md-2 ">
-                <Link to="/addCourse" className="btn btn-success">
+              <h2 className="col-md-8 mb-4">Courses</h2>
+              <div className="col-md-4">
+                <Link
+                  to="/profile/courses/attendance"
+                  className="btn btn-success mr-2"
+                >
+                  Overall Attendance
+                </Link>
+                <Link to="/profile/addCourse" className="btn btn-success">
                   Add Course
                 </Link>
               </div>
@@ -47,6 +62,7 @@ class Courses extends Component {
                   <th>Credit Hours</th>
                   <th>Teacher</th>
                   <th>Attendance</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>{allCourses}</tbody>
@@ -57,7 +73,7 @@ class Courses extends Component {
         coursesContent = (
           <div className="col-md-12 m-auto text-center">
             <h2>No Course Added</h2>
-            <Link to="/addCourse" className="btn btn-success mt-2">
+            <Link to="/profile/addCourse" className="btn btn-success mt-2">
               Add Course
             </Link>
           </div>
@@ -71,7 +87,8 @@ class Courses extends Component {
 
 Courses.propTypes = {
   profile: PropTypes.object.isRequired,
-  getCourses: PropTypes.func.isRequired
+  getCourses: PropTypes.func.isRequired,
+  deleteCourse: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -80,5 +97,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCourses }
+  { getCourses, deleteCourse }
 )(Courses);

@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class CourseItem extends Component {
+  onDelete(id) {
+    this.props.onDelete(id);
+  }
+
   render() {
     const { course, index } = this.props;
     return (
@@ -12,9 +16,20 @@ class CourseItem extends Component {
         <td>{course.ch}</td>
         <td>{course.teacher}</td>
         <td>
-          <Link to="/course" className="btn btn-info">
+          <Link
+            to={`/profile/courses/attendance/${course._id}`}
+            className="btn btn-info"
+          >
             View Attendance
           </Link>
+        </td>
+        <td>
+          <button
+            onClick={() => this.onDelete(course._id)}
+            className="btn btn-outline-danger"
+          >
+            Delete
+          </button>
         </td>
       </tr>
     );

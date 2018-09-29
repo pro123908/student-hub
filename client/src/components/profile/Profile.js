@@ -72,7 +72,7 @@ class Profile extends Component {
                 </div>
               </div>
               <div className="col-md-2 mt-3">
-                <Link className="btn btn-primary" to="/editProfile">
+                <Link className="btn btn-primary" to="/profile/editProfile">
                   Edit Profile
                 </Link>
               </div>

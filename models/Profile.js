@@ -43,13 +43,16 @@ const profileSchema = new Schema({
       },
       attendance: {
         classesHeld: {
-          type: Number
+          type: Number,
+          default: 0
         },
         classesTaken: {
-          type: Number
+          type: Number,
+          default: 0
         },
         classesLeft: {
-          type: Number
+          type: Number,
+          default: 0
         },
         classesLeftDate: [
           {

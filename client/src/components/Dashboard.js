@@ -9,7 +9,7 @@ class Dashboard extends Component {
         <div className="cotainer">
           <div className="row">
             <div className="col-md-12 m-auto text-center">
-              <Link to="addCourse" className="btn btn-success">
+              <Link to="/profile/addCourse" className="btn btn-success">
                 Add Course
               </Link>
             </div>

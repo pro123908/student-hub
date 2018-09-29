@@ -113,27 +113,11 @@ router.post(
   }
 );
 
-// @route GET profile/courses/:courseID
-// @desc Get course by ID
-// @access Private
-router.get(
-  "/courses/:courseID",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      const course = profile.courses.filter(
-        item => item.id === req.params.courseID
-      );
-      res.json(course);
-    });
-  }
-);
-
 // @route GET profile/courses/
 // @desc Get all courses
 // @access Private
 router.get(
-  "/courses/",
+  "/courses",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const errors = {};
@@ -150,11 +134,27 @@ router.get(
   }
 );
 
-// @route POST profile/course/:courseID/attendance
+// @route GET profile/courses/:courseID
+// @desc Get course by ID
+// @access Private
+router.get(
+  "/courses/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const course = profile.courses.filter(
+        item => item.id === req.params.courseID
+      );
+      res.json(course);
+    });
+  }
+);
+
+// @route POST profile/courses/attendance/:courseID
 // @desc Update Attendance
 // @access Private
 router.post(
-  "/course/:courseID/attendance",
+  "/courses/attendance/:courseID",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id }).then(profile => {
@@ -185,7 +185,73 @@ router.post(
       }
 
       profile.courses[courseIndex].attendance = attendance;
-      profile.save().then(profile => res.json(profile));
+      profile.save().then(profile => res.json(profile.courses[courseIndex]));
+    });
+  }
+);
+
+// @route POST profile/courses/attendance/:courseID
+// @desc get courses Attendance
+// @access Private
+router.get(
+  "/courses/attendance/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const course = profile.courses.filter(
+          item => item.id === req.params.courseID
+        );
+
+        res.json(course[0]);
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
+
+// @route GET profile/courses/attendance
+// @desc Get overall attendance
+// @access Private
+router.get(
+  "/courses/all/attendance",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        let coursesAttendance = profile.courses.map(
+          course => course.attendance
+        );
+        // console.log(coursesAttendance);
+
+        let allAttendance = coursesAttendance.reduce((acc, nextVal) => {
+          return {
+            classesHeld: acc.classesHeld + nextVal.classesHeld,
+            classesTaken: acc.classesTaken + nextVal.classesTaken,
+            classesLeft: acc.classesLeft + nextVal.classesLeft
+          };
+        });
+
+        res.json(allAttendance);
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
+
+// @route DELETE /profile/courses/:courseID
+// @desc deletes a course
+// @access Private
+router.delete(
+  "/courses/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const removeIndex = profile.courses
+        .map(course => course.id)
+        .indexOf(req.params.courseID);
+
+      profile.courses.splice(removeIndex, 1);
+
+      profile.save().then(profile => res.json(profile.courses));
     });
   }
 );

@@ -41,6 +41,13 @@ const profileSchema = new Schema({
       teacher: {
         type: String
       },
+      GPA: {
+        type: Number,
+        default: 0
+      },
+      semester: {
+        type: String
+      },
       attendance: {
         classesHeld: {
           type: Number,
@@ -53,20 +60,9 @@ const profileSchema = new Schema({
         classesLeft: {
           type: Number,
           default: 0
-        },
-        classesLeftDate: [
-          {
-            left: {
-              type: Number,
-              required: true
-            },
-            date: {
-              type: Date,
-              default: Date.now
-            }
-          }
-        ]
+        }
       },
+
       date: {
         type: Date,
         default: Date.now

@@ -21,6 +21,8 @@ import AddCourse from "./components/course/AddCourse";
 import Courses from "./components/course/Courses";
 import CourseAttendance from "./components/course/CourseAttendance";
 import AllAttendance from "./components/course/AllAttendance";
+import CoursesResults from "./components/course/CoursesResults";
+import EditCourse from "./components/course/EditCourse";
 
 import store from "./store";
 
@@ -98,6 +100,20 @@ class App extends Component {
                   exact
                   path="/profile/courses/attendance"
                   component={AllAttendance}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/profile/courses/results"
+                  component={CoursesResults}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/profile/courses/edit/:courseID"
+                  component={EditCourse}
                 />
               </Switch>
             </div>

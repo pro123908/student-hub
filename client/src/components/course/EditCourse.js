@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { addCourse } from "../../actions/profileActions";
+import { editCourse, getCourse } from "../../actions/profileActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import SelectListGroup from "../common/SelectListGroup";
 
-class AddCourse extends Component {
+class EditCourse extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,8 +14,8 @@ class AddCourse extends Component {
       code: "",
       ch: "",
       teacher: "",
-      semester: "",
       GPA: "",
+      semester: "",
       errors: {}
     };
 
@@ -23,9 +23,28 @@ class AddCourse extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.match.params.courseID) {
+      this.props.getCourse(this.props.match.params.courseID);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
+    }
+
+    if (nextProps.profile.course) {
+      let course = nextProps.profile.course;
+
+      this.setState({
+        name: course.name,
+        code: course.code,
+        ch: course.ch,
+        teacher: course.teacher,
+        semester: course.semester,
+        GPA: course.GPA ? course.GPA : ""
+      });
     }
   }
 
@@ -36,7 +55,7 @@ class AddCourse extends Component {
   onSubmit(e) {
     e.preventDefault();
 
-    const newCourse = {
+    const editCourse = {
       name: this.state.name,
       code: this.state.code,
       ch: this.state.ch,
@@ -44,8 +63,13 @@ class AddCourse extends Component {
       semester: this.state.semester,
       gpa: this.state.GPA
     };
+    console.log(editCourse);
 
-    this.props.addCourse(newCourse, this.props.history);
+    this.props.editCourse(
+      editCourse,
+      this.props.match.params.courseID,
+      this.props.history
+    );
   }
 
   render() {
@@ -72,9 +96,9 @@ class AddCourse extends Component {
                 <Link to="/profile/courses" className="btn btn-light">
                   Back to courses
                 </Link>
-                <h1 className="display-4 text-center">Add Course</h1>
+                <h1 className="display-4 text-center">Edit Course</h1>
                 <p className="lead text-center">
-                  Add a course to monitor its progress
+                  Edit course to monitor its progress
                 </p>
                 <form noValidate onSubmit={this.onSubmit}>
                   <TextFieldGroup
@@ -139,16 +163,18 @@ class AddCourse extends Component {
   }
 }
 
-AddCourse.propTypes = {
+EditCourse.propTypes = {
   errors: PropTypes.object.isRequired,
-  addCourse: PropTypes.func.isRequired
+  editCourse: PropTypes.func.isRequired,
+  getCourse: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  profile: state.profile
 });
 
 export default connect(
   mapStateToProps,
-  { addCourse }
-)(withRouter(AddCourse));
+  { editCourse, getCourse }
+)(withRouter(EditCourse));

@@ -2,17 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import { getCourses, deleteCourse } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 import CourseItem from "./CourseItem";
+import { getCourses } from "../../actions/profileActions";
 
-class Courses extends Component {
+class CoursesResults extends Component {
   componentDidMount() {
     this.props.getCourses();
-  }
-
-  onDelete(id) {
-    this.props.deleteCourse(id);
   }
 
   render() {
@@ -28,31 +24,26 @@ class Courses extends Component {
       );
     } else {
       if (Object.keys(courses).length > 0) {
-        const allCourses = courses.map((course, index) => (
-          <CourseItem
-            key={course._id}
-            course={course}
-            index={index}
-            onDelete={this.onDelete.bind(this)}
-            attendance={true}
-          />
-        ));
+        let counter = 0;
+        const allCourses = courses.map((course, index) => {
+          if (course.GPA !== 0) {
+            counter++;
+            return (
+              <CourseItem
+                key={course._id}
+                course={course}
+                index={counter}
+                GPA={true}
+              />
+            );
+          }
+          return "";
+        });
 
         coursesContent = (
           <div>
             <div className="row">
-              <h2 className="col-md-8 mb-4">Courses</h2>
-              <div className="col-md-4">
-                <Link
-                  to="/profile/courses/attendance"
-                  className="btn btn-success mr-2"
-                >
-                  Overall Attendance
-                </Link>
-                <Link to="/profile/addCourse" className="btn btn-success">
-                  Add Course
-                </Link>
-              </div>
+              <h2 className="col-md-8 mb-4">Courses Results</h2>
             </div>
             <table className="table table-sm">
               <thead>
@@ -63,7 +54,7 @@ class Courses extends Component {
                   <th>Credit Hours</th>
                   <th>Teacher</th>
                   <th>Sem</th>
-                  <th>Attendance</th>
+                  <th>GPA</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -87,10 +78,9 @@ class Courses extends Component {
   }
 }
 
-Courses.propTypes = {
+CoursesResults.propTypes = {
   profile: PropTypes.object.isRequired,
-  getCourses: PropTypes.func.isRequired,
-  deleteCourse: PropTypes.func.isRequired
+  getCourses: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -99,5 +89,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCourses, deleteCourse }
-)(Courses);
+  { getCourses }
+)(CoursesResults);

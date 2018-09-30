@@ -12,6 +12,10 @@ module.exports = data => {
     errors.code = "Course Code is required";
   }
 
+  if (isEmpty(data.semester)) {
+    errors.semester = "Semester Field is required";
+  }
+
   if (!errors.code && validator.isAlphanumeric(data.code)) {
     errors.code = "Invalid Course Code";
   }
@@ -20,7 +24,7 @@ module.exports = data => {
     errors.ch = "Credit hours field is required";
   }
 
-  if (!errors.ch && !validator.isNumeric(data.ch)) {
+  if (!errors.ch && !validator.isNumeric(data.ch.toString())) {
     errors.ch = "Invalid Credit Hours Input";
   }
 

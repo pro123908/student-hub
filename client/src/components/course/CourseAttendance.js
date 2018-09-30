@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   getCourseAttendance,
-  updateCourseAttendance
+  updateCourseAttendance,
+  deleteCourseAttendance
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 
@@ -50,6 +51,10 @@ class CourseAttendance extends Component {
     return result;
   }
 
+  onReset(id) {
+    this.props.deleteCourseAttendance(id);
+  }
+
   render() {
     const { course, loading } = this.props.profile;
 
@@ -64,7 +69,18 @@ class CourseAttendance extends Component {
             Back to courses
           </Link>
           <div>
-            <h1 className="mb-4">{course.name} Attendance</h1>
+            <div className="row mb-4">
+              <h1 className="col-md-10">{course.name} Attendance</h1>
+              <div className="col-md-2">
+                <button
+                  onClick={this.onReset.bind(this, course._id)}
+                  className="btn btn-danger btn-lg"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+
             <hr />
             <div className="ml-4">
               <p className="lead text-primary">
@@ -119,7 +135,8 @@ class CourseAttendance extends Component {
 CourseAttendance.propTypes = {
   profile: PropTypes.object.isRequired,
   getCourseAttendance: PropTypes.func.isRequired,
-  updateCourseAttendance: PropTypes.func.isRequired
+  updateCourseAttendance: PropTypes.func.isRequired,
+  deleteCourseAttendance: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -128,5 +145,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCourseAttendance, updateCourseAttendance }
+  { getCourseAttendance, updateCourseAttendance, deleteCourseAttendance }
 )(CourseAttendance);

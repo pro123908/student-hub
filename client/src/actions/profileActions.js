@@ -14,7 +14,6 @@ export const createProfile = (profileData, history) => dispatch => {
   axios
     .post("/profile", profileData)
     .then(res => {
-      console.log(res.data);
       history.push("/dashboard");
     })
     .catch(err =>
@@ -47,6 +46,52 @@ export const addCourse = (courseData, history) => dispatch => {
   axios
     .post("/profile/course/add", courseData)
     .then(res => history.push("/profile/courses"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const editCourse = (courseData, id, history) => dispatch => {
+  axios
+    .post(`/profile/courses/edit/${id}`, courseData)
+    .then(res => history.push("/profile/courses"))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const deleteCourse = id => dispatch => {
+  axios
+    .delete(`/profile/courses/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_COURSES,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const getCourse = id => dispatch => {
+  axios
+    .get(`/profile/courses/${id}`)
+    .then(res =>
+      dispatch({
+        type: GET_COURSE,
+        payload: res.data
+      })
+    )
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -111,13 +156,12 @@ export const updateCourseAttendance = (
     );
 };
 
-export const getOverallAttendance = () => dispatch => {
-  dispatch(setCourseLoading());
+export const deleteCourseAttendance = courseID => dispatch => {
   axios
-    .get("/profile/courses/all/attendance")
+    .delete(`/profile/courses/attendance/${courseID}`)
     .then(res =>
       dispatch({
-        type: OVERALL_ATTENDANCE,
+        type: GET_COURSE,
         payload: res.data
       })
     )
@@ -129,12 +173,13 @@ export const getOverallAttendance = () => dispatch => {
     );
 };
 
-export const deleteCourse = id => dispatch => {
+export const getOverallAttendance = () => dispatch => {
+  dispatch(setCourseLoading());
   axios
-    .delete(`/profile/courses/${id}`)
+    .get("/profile/courses/all/attendance")
     .then(res =>
       dispatch({
-        type: GET_COURSES,
+        type: OVERALL_ATTENDANCE,
         payload: res.data
       })
     )

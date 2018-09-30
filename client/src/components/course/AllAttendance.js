@@ -65,6 +65,11 @@ class AllAttendance extends Component {
   }
 }
 
+AllAttendance.propTypes = {
+  profile: PropTypes.object.isRequired,
+  getOverallAttendance: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
   profile: state.profile
 });

@@ -99,7 +99,9 @@ router.post(
           name: req.body.name,
           code: req.body.code,
           ch: req.body.ch,
-          teacher: req.body.teacher
+          teacher: req.body.teacher,
+          semester: req.body.semester,
+          GPA: req.body.gpa ? req.body.gpa : 0
         };
 
         profile.courses.unshift(newCourse);
@@ -108,6 +110,38 @@ router.post(
           .save()
           .then(profile => res.json(profile))
           .catch(err => res.json(err));
+      })
+      .catch(err => res.json(err));
+  }
+);
+
+// @route POST profile/courses/edit/:courseID
+// @desc edit a course
+// @access Private
+router.post(
+  "/courses/edit/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateCourseInputs(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const course = profile.courses
+          .map(course => course.id)
+          .indexOf(req.params.courseID);
+
+        profile.courses[course].name = req.body.name;
+        profile.courses[course].code = req.body.code;
+        profile.courses[course].ch = req.body.ch;
+        profile.courses[course].teacher = req.body.teacher;
+        profile.courses[course].semester = req.body.semester;
+        if (req.body.gpa) profile.courses[course].GPA = req.body.gpa;
+
+        profile.save().then(profile => res.json(profile));
       })
       .catch(err => res.json(err));
   }
@@ -145,7 +179,7 @@ router.get(
       const course = profile.courses.filter(
         item => item.id === req.params.courseID
       );
-      res.json(course);
+      res.json(course[0]);
     });
   }
 );
@@ -158,10 +192,6 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id }).then(profile => {
-      // const course = profile.courses.filter(
-      //   item => item.id === req.params.courseID
-      // );
-
       const courseIndex = profile.courses
         .map(item => item.id)
         .indexOf(req.params.courseID);
@@ -178,10 +208,6 @@ router.post(
         attendance.classesHeld = Number(req.body.held);
         attendance.classesTaken = Number(req.body.taken);
         attendance.classesLeft = Number(req.body.left);
-      }
-      if (Number(req.body.left)) {
-        record.classesLeftDate.unshift({ left: Number(req.body.left) });
-        attendance.classesLeftDate = record.classesLeftDate;
       }
 
       profile.courses[courseIndex].attendance = attendance;
@@ -221,7 +247,6 @@ router.get(
         let coursesAttendance = profile.courses.map(
           course => course.attendance
         );
-        // console.log(coursesAttendance);
 
         let allAttendance = coursesAttendance.reduce((acc, nextVal) => {
           return {
@@ -234,6 +259,29 @@ router.get(
         res.json(allAttendance);
       })
       .catch(err => res.status(400).json(err));
+  }
+);
+
+// @route DELETE /profile/courses/attendance/:courseID
+// @desc Deletes course attendance
+// @access Private
+router.delete(
+  "/courses/attendance/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const courseIndex = profile.courses
+        .map(course => course.id)
+        .indexOf(req.params.courseID);
+
+      profile.courses[courseIndex].attendance = {
+        classesHeld: 0,
+        classesTaken: 0,
+        classesLeft: 0
+      };
+
+      profile.save().then(profile => res.json(profile.courses[courseIndex]));
+    });
   }
 );
 

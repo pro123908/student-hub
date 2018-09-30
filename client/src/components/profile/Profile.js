@@ -42,7 +42,8 @@ class Profile extends Component {
           "phone",
           "department",
           "semester",
-          "year"
+          "year",
+          "CGPA"
         ];
         const userInfoContent = userInfo.map(
           info =>
@@ -79,7 +80,7 @@ class Profile extends Component {
             </div>
             <div className="row">
               <div className="col-md-4" />
-              <div className="col-md-8 user-info-area">{userInfoContent}</div>
+              <div className="col-md-8">{userInfoContent}</div>
             </div>
           </div>
         );

@@ -84,6 +84,7 @@ export const deleteCourse = id => dispatch => {
 };
 
 export const getCourse = id => dispatch => {
+  dispatch(setCourseLoading());
   axios
     .get(`/profile/courses/${id}`)
     .then(res =>
@@ -140,6 +141,7 @@ export const updateCourseAttendance = (
   attendanceData,
   courseID
 ) => dispatch => {
+  dispatch(setCourseLoading());
   axios
     .post(`/profile/courses/attendance/${courseID}`, attendanceData)
     .then(res =>

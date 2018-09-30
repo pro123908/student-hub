@@ -62,6 +62,8 @@ router.get(
       .populate("user", ["name", "avatar", "email"])
       .then(profile => {
         if (profile) {
+          const CGPA = getCGPA(profile);
+
           const userProfile = {
             name: profile.user.name,
             email: profile.user.email,
@@ -71,8 +73,10 @@ router.get(
             department: profile.department,
             year: profile.year,
             semester: profile.semester,
-            phone: profile.phone
+            phone: profile.phone,
+            CGPA
           };
+
           res.json(userProfile);
         } else {
           res.json({ noprofile: "Profile doesn't exist" });
@@ -303,5 +307,41 @@ router.delete(
     });
   }
 );
+
+// @route GET /profile/courses/results/semester
+// @desc Get semester wise result
+// @access Private
+router.get(
+  "/courses/results/semester",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      let semester = profile.courses.filter(
+        course => course.semester === "Fourth"
+      );
+
+      res.json(semester);
+    });
+  }
+);
+
+function getCGPA(profile) {
+  let GPAs = profile.courses.map(course => course.GPA);
+  let creditHours = profile.courses.map(course => course.ch);
+
+  GPAs = GPAs.map((GPA, index) => {
+    return GPA * creditHours[index];
+  });
+
+  creditHours = creditHours.reduce((acc, nextVal) => {
+    return acc + nextVal;
+  });
+
+  GPAs = GPAs.reduce((acc, nextVal) => {
+    return acc + nextVal;
+  });
+
+  return (GPAs / creditHours).toFixed(2);
+}
 
 module.exports = router;

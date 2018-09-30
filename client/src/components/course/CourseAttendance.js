@@ -10,6 +10,17 @@ import {
 import Spinner from "../common/Spinner";
 
 class CourseAttendance extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      held: "",
+      taken: "",
+      left: "",
+      percentage: ""
+    };
+  }
+
   componentDidMount() {
     if (this.props.match.params.courseID) {
       this.props.getCourseAttendance(this.props.match.params.courseID);

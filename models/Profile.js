@@ -26,6 +26,7 @@ const profileSchema = new Schema({
   phone: {
     type: Number
   },
+
   courses: [
     {
       name: {

@@ -24,6 +24,8 @@ import AllAttendance from "./components/course/AllAttendance";
 import CoursesResults from "./components/course/CoursesResults";
 import EditCourse from "./components/course/EditCourse";
 
+import SemesterResults from "./components/semester/SemesterResults";
+
 import store from "./store";
 
 import setAuthToken from "./utils/setAuthToken";
@@ -114,6 +116,13 @@ class App extends Component {
                   exact
                   path="/profile/courses/edit/:courseID"
                   component={EditCourse}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/profile/courses/results/semester"
+                  component={SemesterResults}
                 />
               </Switch>
             </div>

@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { editCourse, getCourse } from "../../actions/profileActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import SelectListGroup from "../common/SelectListGroup";
+import Spinner from "../common/Spinner";
 
 class EditCourse extends Component {
   constructor(props) {
@@ -74,6 +75,7 @@ class EditCourse extends Component {
 
   render() {
     const { errors } = this.state;
+    const { course, loading } = this.props.profile;
 
     const semesterOptions = [
       { label: "* Course Semester", value: 0 },
@@ -87,75 +89,82 @@ class EditCourse extends Component {
       { label: "Final Semester", value: "Final" }
     ];
 
+    let editCourseContent;
+    if (course === null || loading) {
+      editCourseContent = (
+        <div className="col-md-8 m-auto">
+          <Spinner />
+        </div>
+      );
+    } else {
+      editCourseContent = (
+        <div className="col-md-8 m-auto">
+          <Link to="/profile/courses" className="btn btn-light">
+            Back to courses
+          </Link>
+          <h1 className="display-4 text-center">Edit Course</h1>
+          <p className="lead text-center">
+            Edit course to monitor its progress
+          </p>
+          <form noValidate onSubmit={this.onSubmit}>
+            <TextFieldGroup
+              name="name"
+              placeholder="* Course Name"
+              value={this.state.name}
+              error={errors.name}
+              onChange={this.onChange}
+            />
+
+            <TextFieldGroup
+              name="code"
+              placeholder="* Course Code"
+              value={this.state.code}
+              error={errors.code}
+              onChange={this.onChange}
+            />
+
+            <TextFieldGroup
+              name="ch"
+              placeholder="* Credit Hours"
+              value={this.state.ch}
+              error={errors.ch}
+              onChange={this.onChange}
+            />
+
+            <TextFieldGroup
+              name="teacher"
+              placeholder="* Course Teacher"
+              value={this.state.teacher}
+              error={errors.teacher}
+              onChange={this.onChange}
+            />
+
+            <SelectListGroup
+              name="semester"
+              value={this.state.semester}
+              error={errors.semester}
+              onChange={this.onChange}
+              options={semesterOptions}
+            />
+
+            <TextFieldGroup
+              name="GPA"
+              placeholder="GPA (Optional)"
+              value={this.state.GPA}
+              error={errors.GPA}
+              onChange={this.onChange}
+            />
+
+            <input type="submit" className="btn btn-info btn-block mt-4" />
+          </form>
+        </div>
+      );
+    }
     return (
       <div>
         <div className="add-course">
           <div className="container">
-            <div className="row">
-              <div className="col-md-8 m-auto">
-                <Link to="/profile/courses" className="btn btn-light">
-                  Back to courses
-                </Link>
-                <h1 className="display-4 text-center">Edit Course</h1>
-                <p className="lead text-center">
-                  Edit course to monitor its progress
-                </p>
-                <form noValidate onSubmit={this.onSubmit}>
-                  <TextFieldGroup
-                    name="name"
-                    placeholder="* Course Name"
-                    value={this.state.name}
-                    error={errors.name}
-                    onChange={this.onChange}
-                  />
-
-                  <TextFieldGroup
-                    name="code"
-                    placeholder="* Course Code"
-                    value={this.state.code}
-                    error={errors.code}
-                    onChange={this.onChange}
-                  />
-
-                  <TextFieldGroup
-                    name="ch"
-                    placeholder="* Credit Hours"
-                    value={this.state.ch}
-                    error={errors.ch}
-                    onChange={this.onChange}
-                  />
-
-                  <TextFieldGroup
-                    name="teacher"
-                    placeholder="* Course Teacher"
-                    value={this.state.teacher}
-                    error={errors.teacher}
-                    onChange={this.onChange}
-                  />
-
-                  <SelectListGroup
-                    name="semester"
-                    value={this.state.semester}
-                    error={errors.semester}
-                    onChange={this.onChange}
-                    options={semesterOptions}
-                  />
-
-                  <TextFieldGroup
-                    name="GPA"
-                    placeholder="GPA (Optional)"
-                    value={this.state.GPA}
-                    error={errors.GPA}
-                    onChange={this.onChange}
-                  />
-
-                  <input
-                    type="submit"
-                    className="btn btn-info btn-block mt-4"
-                  />
-                </form>
-              </div>
-            </div>
+            <div className="row">{editCourseContent}</div>
           </div>
         </div>
       </div>

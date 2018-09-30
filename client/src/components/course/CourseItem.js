@@ -10,7 +10,7 @@ class CourseItem extends Component {
         <th scope="row">{GPA ? index : index + 1}</th>
         <td>{course.name}</td>
         <td>{course.code}</td>
-        <td>{course.ch}</td>
+        <td className="text-center">{course.ch}</td>
         <td>{course.teacher}</td>
         <td>{course.semester}</td>
         {GPA ? <td>{course.GPA.toFixed(2)}</td> : ""}

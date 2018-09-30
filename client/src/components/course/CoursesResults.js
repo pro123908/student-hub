@@ -44,6 +44,14 @@ class CoursesResults extends Component {
           <div>
             <div className="row">
               <h2 className="col-md-8 mb-4">Courses Results</h2>
+              <div className="col-md-4 text-center">
+                <Link
+                  to="/profile/courses/results/semester"
+                  className="btn btn-success mr-2"
+                >
+                  Semester Wise
+                </Link>
+              </div>
             </div>
             <table className="table table-sm">
               <thead>
@@ -51,7 +59,7 @@ class CoursesResults extends Component {
                   <th>#</th>
                   <th>Name</th>
                   <th>Code</th>
-                  <th>Credit Hours</th>
+                  <th className="text-center">Credit Hours</th>
                   <th>Teacher</th>
                   <th>Sem</th>
                   <th>GPA</th>

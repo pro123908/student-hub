@@ -16,7 +16,7 @@ class Dashboard extends Component {
     let dashboardContent;
     let coursesResult = true;
 
-    if (profile === null || courses === null || loading) {
+    if (profile === null || loading) {
       dashboardContent = (
         <div className="row">
           <div className="col-md-12 m-auto">
@@ -55,7 +55,7 @@ class Dashboard extends Component {
                     Profile
                   </Link>
                 </div>
-                {Object.keys(courses).length > 0 ? (
+                {courses !== null && Object.keys(courses).length > 0 ? (
                   <div>
                     <div className="col-md-12 mt-4">
                       <p className="lead">Check courses results</p>

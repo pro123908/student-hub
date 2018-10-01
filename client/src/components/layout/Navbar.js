@@ -12,6 +12,7 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated } = this.props.auth;
+
     let hubLink;
     hubLink = isAuthenticated ? "/dashboard" : "/";
     const guestLinks = (
@@ -36,6 +37,7 @@ class Navbar extends Component {
             Profile
           </Link>
         </li>
+
         <li className="nav-item">
           <Link to="/profile/courses/results" className="nav-link">
             Results
@@ -82,6 +84,7 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   auth: PropTypes.object.isRequired,
+
   logoutUser: PropTypes.func.isRequired
 };
 

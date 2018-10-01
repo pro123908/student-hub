@@ -27,7 +27,9 @@ class Profile extends Component {
         profileContent = (
           <div className="row text-center">
             <div class="col-md-12">
-              <h3 className="mb-4">Create your profile now</h3>
+              <h3 className="mb-4">
+                You don't have a profile, Create your profile now
+              </h3>
               <Link className="btn btn-large btn-info" to="/createProfile">
                 Create Profile
               </Link>

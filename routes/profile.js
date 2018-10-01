@@ -62,7 +62,10 @@ router.get(
       .populate("user", ["name", "avatar", "email"])
       .then(profile => {
         if (profile) {
-          const CGPA = getCGPA(profile);
+          let CGPA = 0;
+          if (Object.keys(profile.courses) > 0) {
+            CGPA = getCGPA(profile);
+          }
 
           const userProfile = {
             name: profile.user.name,

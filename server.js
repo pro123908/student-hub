@@ -32,6 +32,10 @@ require("./config/passport.js")(passport);
 app.use("/users", users);
 app.use("/profile", profile);
 
+app.get("/test", (req, res) => {
+  res.send("Hello");
+});
+
 //Server static assets if in production
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));

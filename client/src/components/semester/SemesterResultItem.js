@@ -11,7 +11,7 @@ class SemesterResultItem extends Component {
         <td>{course.code}</td>
         <td>{course.ch}</td>
         <td>{course.teacher}</td>
-        <td>{course.GPA}</td>
+        <td>{course.GPA.toFixed(2)}</td>
       </tr>
     );
   }

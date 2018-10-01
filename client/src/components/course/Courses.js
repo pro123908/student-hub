@@ -41,20 +41,23 @@ class Courses extends Component {
         coursesContent = (
           <div>
             <div className="row">
-              <h2 className="col-md-8 mb-4">Courses</h2>
-              <div className="col-md-4">
+              <h2 className="col-md-6 mb-4">Courses</h2>
+              <div className="col-md-6">
                 <Link
                   to="/profile/courses/attendance"
-                  className="btn btn-success mr-2"
+                  className="btn btn-success mr-2 col-md-4 col-sm-12"
                 >
                   Overall Attendance
                 </Link>
-                <Link to="/profile/addCourse" className="btn btn-success">
+                <Link
+                  to="/profile/addCourse"
+                  className="btn btn-success col-md-4 col-sm-12 "
+                >
                   Add Course
                 </Link>
               </div>
             </div>
-            <table className="table table-sm">
+            <table className="table table-sm table-responsive-sm">
               <thead>
                 <tr>
                   <th>#</th>

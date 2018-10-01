@@ -1,5 +1,5 @@
-//keys that will be used for different purposes
-module.exports = {
-  mongoURI: "mongodb://pro123908:home123@ds111993.mlab.com:11993/student-hub",
-  secret: "secret"
-};
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./keys_prod");
+} else {
+  module.exports = require("./keys_dev");
+}

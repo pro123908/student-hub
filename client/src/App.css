@@ -139,3 +139,7 @@ body {
 .user-info-area {
   margin-top: -80px;
 }
+
+.col-sm-12 {
+  margin-top: 2%;
+}

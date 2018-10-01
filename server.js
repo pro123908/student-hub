@@ -9,7 +9,7 @@ const path = require("path");
 const app = express();
 
 //Defining port for server
-const port = 5000;
+const port = process.env.PORT || 5000;
 
 //Importing mongoURI for database connection
 const keys = require("./config/keys");

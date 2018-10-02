@@ -35,7 +35,7 @@ class SemesterResults extends Component {
     const { courses, loading, profile } = this.props.profile;
 
     let semesterContent;
-    let CGPA = "";
+    let CGPA = null;
 
     if (profile === null) {
       semesterContent = (
@@ -64,7 +64,9 @@ class SemesterResults extends Component {
       } else {
         if (Object.keys(courses).length > 0) {
           const gpaCourses = courses.filter(course => course.GPA !== 0);
-          CGPA = this.getCGPA(gpaCourses);
+          if (gpaCourses.length > 0) {
+            CGPA = this.getCGPA(gpaCourses);
+          }
 
           let firstSemester = gpaCourses.filter(
             course => course.semester === "First"
@@ -93,11 +95,16 @@ class SemesterResults extends Component {
 
           semesterContent = (
             <div>
-              <div className="row">
-                <div className="col-md-8 mb-3">
-                  <h1>Semester Results</h1>
+              {CGPA ? (
+                <div className="row">
+                  <div className="col-md-8 mb-3">
+                    <h1>Semester Results</h1>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                ""
+              )}
+
               {firstSemester.length !== 0 ? (
                 <SemesterResult semesterName="First" course={firstSemester} />
               ) : (
@@ -141,11 +148,19 @@ class SemesterResults extends Component {
               ) : (
                 ""
               )}
-              <div className="row">
-                <div className="col md-12 m-auto text-center">
-                  <h1>Overall CGPA : {CGPA}</h1>
+              {CGPA ? (
+                <div className="row">
+                  <div className="col md-12 m-auto text-center">
+                    <h1>Overall CGPA : {CGPA}</h1>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="row">
+                  <div className="col md-12 m-auto text-center">
+                    <h1>No Results</h1>
+                  </div>
+                </div>
+              )}
             </div>
           );
         } else {

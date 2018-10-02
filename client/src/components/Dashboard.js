@@ -66,15 +66,7 @@ class Dashboard extends Component {
                         Results
                       </Link>
                     </div>
-                    <div className="col-md-12 mt-4">
-                      <p className="lead">Check semester wise results</p>
-                      <Link
-                        to="/profile/courses/results/semester"
-                        className="btn btn-success"
-                      >
-                        Results
-                      </Link>
-                    </div>
+
                     <div className="col-md-12 mt-4">
                       <p className="lead">Check Overall Attendance</p>
                       <Link

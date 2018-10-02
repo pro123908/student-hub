@@ -9,6 +9,7 @@ import {
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 import CourseItem from "./CourseItem";
+import SemesterResult from "../semester/SemesterResult";
 
 class Courses extends Component {
   componentDidMount() {
@@ -52,15 +53,30 @@ class Courses extends Component {
         );
       } else {
         if (Object.keys(courses).length > 0) {
-          const allCourses = courses.map((course, index) => (
-            <CourseItem
-              key={course._id}
-              course={course}
-              index={index}
-              onDelete={this.onDelete.bind(this)}
-              attendance={true}
-            />
-          ));
+          let firstSemester = courses.filter(
+            course => course.semester === "First"
+          );
+          let secondSemester = courses.filter(
+            course => course.semester === "Second"
+          );
+          let thirdSemester = courses.filter(
+            course => course.semester === "Third"
+          );
+          let fourthSemester = courses.filter(
+            course => course.semester === "Fourth"
+          );
+          let fivethSemester = courses.filter(
+            course => course.semester === "Fiveth"
+          );
+          let sixthSemester = courses.filter(
+            course => course.semester === "Sixth"
+          );
+          let seventhSemester = courses.filter(
+            course => course.semester === "Seventh"
+          );
+          let finalSemester = courses.filter(
+            course => course.semester === "Final"
+          );
 
           coursesContent = (
             <div>
@@ -81,23 +97,125 @@ class Courses extends Component {
                   </Link>
                 </div>
               </div>
-              <table className="table table-sm table-responsive-sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Code</th>
-                    <th>Credit Hours</th>
-                    <th>Teacher</th>
-                    <th>Sem</th>
-                    <th>Attendance</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>{allCourses}</tbody>
-              </table>
+              {firstSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="First"
+                  course={firstSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {secondSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Second"
+                  course={secondSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {thirdSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Third"
+                  course={thirdSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {fourthSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Fourth"
+                  course={fourthSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {fivethSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Fiveth"
+                  course={fivethSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {sixthSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Sixth"
+                  course={sixthSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {seventhSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Seventh"
+                  course={seventhSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
+              {finalSemester.length !== 0 ? (
+                <SemesterResult
+                  semesterName="Final"
+                  course={finalSemester}
+                  courseDisplay={true}
+                  onDelete={this.onDelete.bind(this)}
+                />
+              ) : (
+                ""
+              )}
             </div>
           );
+
+          // coursesContent = (
+          //   <div>
+          //     <div className="row">
+          //       <h2 className="col-md-6 mb-4">Courses</h2>
+          //       <div className="col-md-6">
+          //         <Link
+          //           to="/profile/courses/attendance"
+          //           className="btn btn-success mr-2 col-md-4 col-sm-12"
+          //         >
+          //           Overall Attendance
+          //         </Link>
+          //         <Link
+          //           to="/profile/addCourse"
+          //           className="btn btn-success col-md-4 col-sm-12 "
+          //         >
+          //           Add Course
+          //         </Link>
+          //       </div>
+          //     </div>
+          //     <table className="table table-sm table-responsive-sm">
+          //       <thead>
+          //         <tr>
+          //           <th>#</th>
+          //           <th>Name</th>
+          //           <th>Code</th>
+          //           <th>Credit Hours</th>
+          //           <th>Teacher</th>
+          //           <th>Sem</th>
+          //           <th>Attendance</th>
+          //           <th>Actions</th>
+          //         </tr>
+          //       </thead>
+          //       <tbody>{allCourses}</tbody>
+          //     </table>
+          //   </div>
+          // );
         } else {
           coursesContent = (
             <div className="col-md-12 m-auto text-center">

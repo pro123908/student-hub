@@ -36,10 +36,37 @@ class AddCourse extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    const allCourses = [
+      { name: "Calculus", code: "MT-173", ch: "3" },
+      { name: "Pakistan Studies", code: "HS-105", ch: "2" },
+      { name: "Functional English", code: "HS-104", ch: "3" },
+      { name: "Fundamentals of IT", code: "CT-174", ch: "3" },
+      { name: "Discrete Structures", code: "CT-162", ch: "3" },
+      { name: "Programming Languages", code: "CT-153", ch: "3" },
+      { name: "OOC & Programming", code: "SE-201", ch: "4" },
+      { name: "Applied Physics", code: "PH-122", ch: "4" },
+      { name: "Islamic Studies", code: "HS-205", ch: "2" },
+      { name: "Basic Electronics", code: "EL-134", ch: "4" },
+      { name: "DSA & Applications", code: "CT-157", ch: "4" },
+      { name: "Software Engineering", code: "SE-207", ch: "3" },
+      { name: "Computer Graphics", code: "SE-202", ch: "4" },
+      {
+        name: "Differential Equations & Linear Algebra",
+        code: "MT-273",
+        ch: "3"
+      },
+      { name: "Business Communication & Ethics", code: "HS-208", ch: "3" },
+      { name: "Logic Design & Switching Theory", code: "CS-251", ch: "4" }
+    ];
+
+    let info = allCourses
+      .filter(course => course.name === this.state.name)
+      .map(course => course)[0];
+
     const newCourse = {
       name: this.state.name,
-      code: this.state.code,
-      ch: this.state.ch,
+      code: info.code,
+      ch: info.ch,
       teacher: this.state.teacher,
       semester: this.state.semester,
       gpa: this.state.GPA
@@ -50,6 +77,43 @@ class AddCourse extends Component {
 
   render() {
     const { errors } = this.state;
+    let semester = null;
+    const firstSemesterCourses = [
+      { label: "* First Semester Courses", value: 0 },
+      { label: "Calculus", value: "Calculus" },
+      { label: "Pakistan Studies", value: "Pakistan Studies" },
+      { label: "Functional English", value: "Functional English" },
+      { label: "Fundamentals of IT", value: "Fundamentals of IT" },
+      { label: "Discrete Structures", value: "Discrete Structures" },
+      { label: "Programming Languages", value: "Programming Languages" }
+    ];
+
+    const secondSemesterCourses = [
+      { label: "* Second Semester Courses", value: 0 },
+      { label: "OOC & Programming", value: "OOC & Programming" },
+      { label: "Applied Physics", value: "Applied Physics" },
+      { label: "Islamic Studies", value: "Islamic Studies" },
+      { label: "Basic Electronics", value: "Basic Electronics" },
+      { label: "DSA & Applications", value: "DSA & Applications" }
+    ];
+
+    const thirdSemesterCourses = [
+      { label: "* Third Semester Courses", value: 0 },
+      { label: "Software Engineering", value: "Software Engineering" },
+      { label: "Computer Graphics", value: "Computer Graphics" },
+      {
+        label: "Differential Equations & Linear Algebra",
+        value: "Differential Equations & Linear Algebra"
+      },
+      {
+        label: "Business Communication & Ethics	",
+        value: "Business Communication & Ethics	"
+      },
+      {
+        label: "Logic Design & Switching Theory	",
+        value: "Logic Design & Switching Theory	"
+      }
+    ];
 
     const semesterOptions = [
       { label: "* Course Semester", value: 0 },
@@ -62,6 +126,24 @@ class AddCourse extends Component {
       { label: "Seventh Semester", value: "Seventh" },
       { label: "Final Semester", value: "Final" }
     ];
+
+    if (this.state.semester === "First") {
+      semester = firstSemesterCourses;
+    } else if (this.state.semester === "Second") {
+      semester = secondSemesterCourses;
+    } else if (this.state.semester === "Third") {
+      semester = thirdSemesterCourses;
+    } else if (this.state.semester === "Fourth") {
+      semester = "";
+    } else if (this.state.semester === "Fiveth") {
+      semester = "";
+    } else if (this.state.semester === "Sixth") {
+      semester = "";
+    } else if (this.state.semester === "Seventh") {
+      semester = "";
+    } else if (this.state.semester === "Final") {
+      semester = "";
+    }
 
     return (
       <div>
@@ -77,29 +159,49 @@ class AddCourse extends Component {
                   Add a course to monitor its progress
                 </p>
                 <form noValidate onSubmit={this.onSubmit}>
-                  <TextFieldGroup
+                  <SelectListGroup
+                    name="semester"
+                    value={this.state.semester}
+                    error={errors.semester}
+                    onChange={this.onChange}
+                    options={semesterOptions}
+                  />
+
+                  {semester ? (
+                    <SelectListGroup
+                      name="name"
+                      value={this.state.name}
+                      error={errors.name}
+                      onChange={this.onChange}
+                      options={semester}
+                    />
+                  ) : (
+                    ""
+                  )}
+
+                  {/* <TextFieldGroup
                     name="name"
                     placeholder="* Course Name"
                     value={this.state.name}
                     error={errors.name}
                     onChange={this.onChange}
-                  />
+                  /> */}
 
-                  <TextFieldGroup
+                  {/* <TextFieldGroup
                     name="code"
                     placeholder="* Course Code"
                     value={this.state.code}
                     error={errors.code}
                     onChange={this.onChange}
-                  />
+                  /> */}
 
-                  <TextFieldGroup
+                  {/* <TextFieldGroup
                     name="ch"
                     placeholder="* Credit Hours"
                     value={this.state.ch}
                     error={errors.ch}
                     onChange={this.onChange}
-                  />
+                  /> */}
 
                   <TextFieldGroup
                     name="teacher"
@@ -107,14 +209,6 @@ class AddCourse extends Component {
                     value={this.state.teacher}
                     error={errors.teacher}
                     onChange={this.onChange}
-                  />
-
-                  <SelectListGroup
-                    name="semester"
-                    value={this.state.semester}
-                    error={errors.semester}
-                    onChange={this.onChange}
-                    options={semesterOptions}
                   />
 
                   <TextFieldGroup

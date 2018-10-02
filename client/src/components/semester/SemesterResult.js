@@ -21,7 +21,7 @@ class SemesterResult extends Component {
     return (GPAs / creditHours).toFixed(2);
   }
   render() {
-    const { semesterName, course } = this.props;
+    const { semesterName, course, courseDisplay, onDelete } = this.props;
 
     let semesterContent;
 
@@ -29,7 +29,13 @@ class SemesterResult extends Component {
     let CGPA = this.getCGPA(course);
 
     courseItem = course.map((course, index) => (
-      <SemesterResultItem key={course._id} course={course} index={index} />
+      <SemesterResultItem
+        key={course._id}
+        course={course}
+        index={index}
+        courseDisplay={courseDisplay}
+        onDelete={onDelete}
+      />
     ));
 
     semesterContent = (
@@ -43,20 +49,26 @@ class SemesterResult extends Component {
               <th>Code</th>
               <th>Credit Hours</th>
               <th>Teacher</th>
-              <th>GPA</th>
+              {courseDisplay ? <th>Attendance</th> : <th>GPA</th>}
+              <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
             {courseItem}
-            <tr className="mt-4 bg-light">
-              <td />
-              <td />
-              <td />
-              <td />
-              <td className="lead">GPA</td>
-              <td className="lead ">{CGPA}</td>
-            </tr>
+            {courseDisplay ? (
+              ""
+            ) : (
+              <tr className="mt-4 bg-light">
+                <td />
+                <td />
+                <td />
+                <td />
+                <td className="lead">GPA</td>
+                <td className="lead ">{CGPA}</td>
+                <td />
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

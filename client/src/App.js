@@ -108,7 +108,7 @@ class App extends Component {
                 <PrivateRoute
                   exact
                   path="/profile/courses/results"
-                  component={CoursesResults}
+                  component={SemesterResults}
                 />
               </Switch>
               <Switch>
@@ -116,13 +116,6 @@ class App extends Component {
                   exact
                   path="/profile/courses/edit/:courseID"
                   component={EditCourse}
-                />
-              </Switch>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path="/profile/courses/results/semester"
-                  component={SemesterResults}
                 />
               </Switch>
             </div>

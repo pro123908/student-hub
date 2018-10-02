@@ -20,8 +20,8 @@ class Landing extends Component {
                 <h1 className="display-3 mb-4">Student Hub</h1>
                 <p className="lead">
                   {" "}
-                  Create a developer profile/portfolio, share posts and get help
-                  from other developers
+                  Create a student profile, manage courses and check maintain
+                  result record
                 </p>
                 <hr />
                 <Link to="/register" className="btn btn-lg btn-info mr-2">

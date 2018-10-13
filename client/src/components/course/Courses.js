@@ -66,7 +66,7 @@ class Courses extends Component {
             course => course.semester === "Fourth"
           );
           let fivethSemester = courses.filter(
-            course => course.semester === "Fiveth"
+            course => course.semester === "Fivth"
           );
           let sixthSemester = courses.filter(
             course => course.semester === "Sixth"
@@ -81,7 +81,7 @@ class Courses extends Component {
           coursesContent = (
             <div>
               <div className="row">
-                <h2 className="col-md-6 mb-4">Courses</h2>
+                <h2 className="col-md-6 mb-4 text-center-res">Courses</h2>
                 <div className="col-md-6">
                   <Link
                     to="/profile/courses/attendance"
@@ -139,7 +139,7 @@ class Courses extends Component {
               )}
               {fivethSemester.length !== 0 ? (
                 <SemesterResult
-                  semesterName="Fiveth"
+                  semesterName="Fivth"
                   course={fivethSemester}
                   courseDisplay={true}
                   onDelete={this.onDelete.bind(this)}

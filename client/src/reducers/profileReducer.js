@@ -5,7 +5,8 @@ import {
   GET_COURSE,
   COURSES_LOADING,
   COURSE_LOADING,
-  OVERALL_ATTENDANCE
+  OVERALL_ATTENDANCE,
+  SEMESTER_ATTENDANCE
 } from "../actions/types";
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   courses: null,
   course: null,
   allAttendance: null,
+  semesterAttendance: null,
   loading: false
 };
 
@@ -55,6 +57,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         allAttendance: action.payload,
+        loading: false
+      };
+    case SEMESTER_ATTENDANCE:
+      return {
+        ...state,
+        semesterAttendance: action.payload,
         loading: false
       };
 

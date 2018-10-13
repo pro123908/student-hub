@@ -16,7 +16,7 @@ class SemesterResultItem extends Component {
           <td>
             <Link
               to={`/profile/courses/attendance/${course._id}`}
-              className="btn btn-info"
+              className="btn btn-info btn-sm"
             >
               View Attendance
             </Link>
@@ -28,13 +28,13 @@ class SemesterResultItem extends Component {
           <td>
             <Link
               to={`/profile/courses/edit/${course._id}`}
-              className="btn btn-success mr-2"
+              className="btn btn-success mr-2 btn-sm"
             >
               Edit Course
             </Link>
             <button
               onClick={onDelete.bind(this, course._id)}
-              className="btn btn-outline-danger"
+              className="btn btn-outline-danger btn-sm mt-res-2"
             >
               Delete
             </button>

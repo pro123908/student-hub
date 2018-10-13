@@ -143,3 +143,21 @@ body {
 .col-sm-12 {
   margin-top: 2%;
 }
+
+@media (max-width: 768px) {
+  .mt-res-2 {
+    margin-top: 5%;
+  }
+  .mb-res-2 {
+    margin-bottom: 5%;
+  }
+
+  .text-center-res {
+    text-align: center;
+  }
+
+  .in-sem-heading {
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+}

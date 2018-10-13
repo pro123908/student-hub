@@ -6,7 +6,8 @@ import {
   COURSES_LOADING,
   GET_COURSES,
   GET_COURSE,
-  OVERALL_ATTENDANCE
+  OVERALL_ATTENDANCE,
+  SEMESTER_ATTENDANCE
 } from "./types";
 import axios from "axios";
 
@@ -182,6 +183,24 @@ export const getOverallAttendance = () => dispatch => {
     .then(res =>
       dispatch({
         type: OVERALL_ATTENDANCE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const getSemesterAttendance = semester => dispatch => {
+  dispatch(setCourseLoading());
+  axios
+    .get(`/profile/courses/attendance/semester/${semester}`)
+    .then(res =>
+      dispatch({
+        type: SEMESTER_ATTENDANCE,
         payload: res.data
       })
     )

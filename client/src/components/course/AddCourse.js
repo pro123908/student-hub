@@ -56,7 +56,26 @@ class AddCourse extends Component {
         ch: "3"
       },
       { name: "Business Communication & Ethics", code: "HS-208", ch: "3" },
-      { name: "Logic Design & Switching Theory", code: "CS-251", ch: "4" }
+      { name: "Logic Design & Switching Theory", code: "CS-251", ch: "4" },
+      { name: "Computer Architecture & Organization", code: "CS-252", ch: "4" },
+      { name: "Financial & Cost Accounting", code: "CT-258", ch: "3" },
+      { name: "Software Requirement Engineering", code: "SE-208", ch: "3" },
+      { name: "Database Management Systems", code: "SE-204", ch: "4" },
+      { name: "Web Engineering", code: "SE-206", ch: "4" },
+      { name: "Applied Economics For Engineers", code: "IF-301", ch: "3" },
+      { name: "Probability & Statistics", code: "MT-331", ch: "3" },
+      { name: "Software Design & Architecture", code: "SE-308", ch: "3" },
+      { name: "Human Computer Interaction", code: "SE-302", ch: "3" },
+      { name: "Operating Systems", code: "SE-303", ch: "4" },
+      { name: "Computer Communication Networks", code: "CS-351", ch: "4" },
+      {
+        name: "Artificial Intelligence & Expert Systems",
+        code: "CT-361",
+        ch: "4"
+      },
+      { name: "Software Quality Engineering", code: "SE-309", ch: "3" },
+      { name: "Software Project Management", code: "SE-310", ch: "3" },
+      { name: "E-Commerce", code: "SE-311", ch: "3" }
     ];
 
     let info = allCourses
@@ -115,16 +134,144 @@ class AddCourse extends Component {
       }
     ];
 
+    const fourthSemesterCourses = [
+      { label: "* Fourth Semester Courses", value: 0 },
+      {
+        label: "Computer Architecture & Organization",
+        value: "Computer Architecture & Organization"
+      },
+      {
+        label: "Financial & Cost Accounting",
+        value: "Financial & Cost Accounting"
+      },
+      {
+        label: "Software Requirement Engineering",
+        value: "Software Requirement Engineering"
+      },
+      {
+        label: "Database Management Systems",
+        value: "Database Management Systems"
+      },
+      {
+        label: "Web Engineering",
+        value: "Web Engineering"
+      }
+    ];
+
+    const fivthSemesterCourses = [
+      { label: "* Fivth Semester Courses", value: 0 },
+      {
+        label: "Applied Economics For Engineers",
+        value: "Applied Economics For Engineers"
+      },
+      {
+        label: "Probability & Statistics",
+        value: "Probability & Statistics"
+      },
+      {
+        label: "Software Design & Architecture",
+        value: "Software Design & Architecture"
+      },
+      {
+        label: "Human Computer Interaction",
+        value: "Human Computer Interaction"
+      },
+      {
+        label: "Operating Systems",
+        value: "Operating Systems"
+      }
+    ];
+
+    const sixthSemesterCourses = [
+      { label: "* Sixth Semester Courses", value: 0 },
+      {
+        label: "Computer Communication Networks",
+        value: "Computer Communication Networks"
+      },
+      {
+        label: "Artificial Intelligence & Expert Systems",
+        value: "Artificial Intelligence & Expert Systems"
+      },
+      {
+        label: "Software Quality Engineering",
+        value: "Software Quality Engineering"
+      },
+      {
+        label: "Software Project Management",
+        value: "Software Project Management"
+      },
+      {
+        label: "E-Commerce",
+        value: "E-Commerce"
+      }
+    ];
+
+    const seventhSemesterCourses = [
+      { label: "* Seventh Semester Courses", value: 0 },
+      {
+        label: "Network & Information Security",
+        value: "Network & Information Security"
+      },
+      {
+        label: "Distributed Computing",
+        value: "Distributed Computing"
+      },
+      {
+        label: "Modeling & Simulation",
+        value: "Modeling & Simulation"
+      },
+      {
+        label: "Data Warehousing & Minning",
+        value: "Data Warehousing & Minning"
+      },
+      {
+        label: "Software Engineering Project",
+        value: "Software Engineering Project"
+      }
+    ];
+
+    const finalSemesterCourses = [
+      { label: "* Final Semester Courses", value: 0 },
+      {
+        label: "Entrepreneruship",
+        value: "Entrepreneruship"
+      },
+      {
+        label: "Numerical Method",
+        value: "Numerical Method"
+      },
+      {
+        label: "Design Patterns",
+        value: "Design Patterns"
+      },
+      {
+        label: "Software Testing, Strategies & Techniques (Elective)",
+        value: "Software Testing, Strategies & Techniques"
+      },
+      {
+        label: "Software Reliability Engineering  (Elective)",
+        value: "Software Reliability Engineering"
+      },
+      {
+        label: "Information Systems Engineering  (Elective)",
+        value: "Information Systems Engineering"
+      },
+      {
+        label: "Software Engineering Project",
+        value: "Software Engineering Project"
+      }
+    ];
+
     const semesterOptions = [
       { label: "* Course Semester", value: 0 },
       { label: "First Semester", value: "First" },
       { label: "Second Semester", value: "Second" },
       { label: "Third Semester", value: "Third" },
       { label: "Fourth Semester", value: "Fourth" },
-      { label: "Fiveth Semester", value: "Fiveth" },
-      { label: "Sixth Semester", value: "Sixth" },
-      { label: "Seventh Semester", value: "Seventh" },
-      { label: "Final Semester", value: "Final" }
+      { label: "Fivth Semester", value: "Fivth" },
+      { label: "Sixth Semester", value: "Sixth" }
+      // { label: "Seventh Semester", value: "Seventh" },
+      // { label: "Final Semester", value: "Final" }
     ];
 
     if (this.state.semester === "First") {
@@ -134,11 +281,11 @@ class AddCourse extends Component {
     } else if (this.state.semester === "Third") {
       semester = thirdSemesterCourses;
     } else if (this.state.semester === "Fourth") {
-      semester = "";
-    } else if (this.state.semester === "Fiveth") {
-      semester = "";
+      semester = fourthSemesterCourses;
+    } else if (this.state.semester === "Fivth") {
+      semester = fivthSemesterCourses;
     } else if (this.state.semester === "Sixth") {
-      semester = "";
+      semester = sixthSemesterCourses;
     } else if (this.state.semester === "Seventh") {
       semester = "";
     } else if (this.state.semester === "Final") {

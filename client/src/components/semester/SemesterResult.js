@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import SemesterResultItem from "./SemesterResultItem";
+import { Link } from "react-router-dom";
 
 class SemesterResult extends Component {
   getCGPA(course) {
@@ -40,8 +41,23 @@ class SemesterResult extends Component {
 
     semesterContent = (
       <div className="">
-        <h3>{semesterName} Semester</h3>
-        <table className="table table-sm  table-hover">
+        <div className="row">
+          <div className="col-md-6">
+            <h3 className="in-sem-heading text-center-res">
+              {semesterName} Semester
+            </h3>
+          </div>
+          <div className="col-md-6 text-center">
+            <Link
+              to={`/profile/courses/attendance/semester/${semesterName}`}
+              className="btn btn-outline-info btn-sm mb-res-2"
+            >
+              Semester Attendance
+            </Link>
+          </div>
+        </div>
+
+        <table className="table table-sm table-responsive table-hover">
           <thead>
             <tr>
               <th>#</th>
@@ -71,6 +87,7 @@ class SemesterResult extends Component {
             )}
           </tbody>
         </table>
+        <hr />
       </div>
     );
 

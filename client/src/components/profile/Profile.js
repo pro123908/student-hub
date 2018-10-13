@@ -52,7 +52,9 @@ class Profile extends Component {
             isEmpty(profile[info]) ? null : (
               <div className="row">
                 <div className="col-md-6">
-                  <label>{this.capatilize(info)}</label>
+                  <label class="font-weight-bold">
+                    {this.capatilize(info)}
+                  </label>
                 </div>
                 <div className="col-md-6">
                   <p>{profile[info]}</p>
@@ -69,18 +71,18 @@ class Profile extends Component {
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="profile-head">
-                  <span className="display-4">{profile.name}</span>
+                <div className="profile-head text-center-res">
+                  <span className="display-4 ">{profile.name}</span>
                   <span className="d-block text-muted">{profile.email}</span>
                 </div>
               </div>
-              <div className="col-md-2 mt-3">
+              <div className="col-md-2 mt-3 text-center-res mb-res-2">
                 <Link className="btn btn-primary" to="/profile/editProfile">
                   Edit Profile
                 </Link>
               </div>
             </div>
-            <div className="row">
+            <div className="row text-center-res">
               <div className="col-md-4" />
               <div className="col-md-8">{userInfoContent}</div>
             </div>

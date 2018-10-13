@@ -63,8 +63,13 @@ router.get(
       .then(profile => {
         if (profile) {
           let CGPA = 0;
-          if (Object.keys(profile.courses) > 0) {
-            CGPA = getCGPA(profile);
+          if (Object.keys(profile.courses).length > 0) {
+            const gpaCourses = profile.courses.filter(
+              course => course.GPA !== 0
+            );
+            if (gpaCourses.length > 0) {
+              CGPA = getCGPA(gpaCourses);
+            }
           }
 
           const userProfile = {
@@ -188,6 +193,33 @@ router.get(
       );
       res.json(course[0]);
     });
+  }
+);
+
+// @route GET profile/courses/attendance/semester/:semester
+// @desc Get Semester attendance
+// @access Private
+router.get(
+  "/courses/attendance/semester/:semester",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        let coursesAttendance = profile.courses
+          .filter(course => course.semester === req.params.semester)
+          .map(course => course.attendance);
+
+        let allAttendance = coursesAttendance.reduce((acc, nextVal) => {
+          return {
+            classesHeld: acc.classesHeld + nextVal.classesHeld,
+            classesTaken: acc.classesTaken + nextVal.classesTaken,
+            classesLeft: acc.classesLeft + nextVal.classesLeft
+          };
+        });
+
+        res.json(allAttendance);
+      })
+      .catch(err => res.status(400).json(err));
   }
 );
 
@@ -328,9 +360,9 @@ router.get(
   }
 );
 
-function getCGPA(profile) {
-  let GPAs = profile.courses.map(course => course.GPA);
-  let creditHours = profile.courses.map(course => course.ch);
+function getCGPA(course) {
+  let GPAs = course.map(course => course.GPA);
+  let creditHours = course.map(course => course.ch);
 
   GPAs = GPAs.map((GPA, index) => {
     return GPA * creditHours[index];
@@ -343,6 +375,9 @@ function getCGPA(profile) {
   GPAs = GPAs.reduce((acc, nextVal) => {
     return acc + nextVal;
   });
+
+  console.log(GPAs);
+  console.log(creditHours);
 
   return (GPAs / creditHours).toFixed(2);
 }

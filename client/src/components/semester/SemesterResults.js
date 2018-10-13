@@ -28,6 +28,8 @@ class SemesterResults extends Component {
       return acc + nextVal;
     });
 
+    console.log(GPAs);
+    console.log(creditHours);
     return (GPAs / creditHours).toFixed(2);
   }
 
@@ -98,7 +100,7 @@ class SemesterResults extends Component {
               {CGPA ? (
                 <div className="row">
                   <div className="col-md-8 mb-3">
-                    <h1>Semester Results</h1>
+                    <h1 className="text-center-res">Semester Results</h1>
                   </div>
                 </div>
               ) : (

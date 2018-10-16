@@ -34,6 +34,7 @@ import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
 import "./App.css";
+import "./customScript.js";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);

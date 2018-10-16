@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { getSemesterAttendance } from "../../actions/profileActions";
+import {
+  getSemesterAttendance,
+  deleteSemesterAttendance
+} from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 
 class semesterAttendance extends Component {
@@ -10,6 +13,10 @@ class semesterAttendance extends Component {
     if (this.props.match.params.semester) {
       this.props.getSemesterAttendance(this.props.match.params.semester);
     }
+  }
+
+  onReset() {
+    this.props.deleteSemesterAttendance(this.props.match.params.semester);
   }
 
   getPercentage(val1, val2) {
@@ -31,7 +38,21 @@ class semesterAttendance extends Component {
     } else {
       semesterAttendanceContent = (
         <div>
-          <h1 className="mb-4">Semester Attendance</h1>
+          <Link to="/profile/courses" className="btn btn-light mb-4">
+            Back to courses
+          </Link>
+          <div className="row">
+            <h1 className="col-md-10">Semester Attendance</h1>
+            <div className="col-md-2">
+              <button
+                onClick={this.onReset.bind(this)}
+                className="btn btn-danger btn-lg"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
           <hr />
           <div className="ml-4">
             <p className="lead text-primary">
@@ -69,7 +90,8 @@ class semesterAttendance extends Component {
 
 semesterAttendance.propTypes = {
   profile: PropTypes.object.isRequired,
-  getSemesterAttendance: PropTypes.func.isRequired
+  getSemesterAttendance: PropTypes.func.isRequired,
+  deleteSemesterAttendance: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -78,5 +100,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getSemesterAttendance }
+  { getSemesterAttendance, deleteSemesterAttendance }
 )(semesterAttendance);

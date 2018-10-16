@@ -223,6 +223,38 @@ router.get(
   }
 );
 
+// @route DELETE profile/courses/attendance/semester/:semester
+// @desc Deletes Semester attendance
+// @access Private
+router.delete(
+  "/courses/attendance/semester/:semester",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id })
+      .then(profile => {
+        const semester = profile.courses.filter(
+          course => course.semester === req.params.semester
+        );
+
+        for (i = 0; i < semester.length; i++) {
+          semester[i].attendance = {
+            classesHeld: 0,
+            classesTaken: 0,
+            classesLeft: 0
+          };
+        }
+        const updatedSemester = {
+          classesHeld: 0,
+          classesTaken: 0,
+          classesLeft: 0
+        };
+
+        profile.save().then(profile => res.json(updatedSemester));
+      })
+      .catch(err => res.status(400).json(err));
+  }
+);
+
 // @route POST profile/courses/attendance/:courseID
 // @desc Update Attendance
 // @access Private

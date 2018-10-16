@@ -47,17 +47,17 @@ class SemesterResult extends Component {
               {semesterName} Semester
             </h3>
           </div>
-          <div className="col-md-6 text-center">
+          <div className="col-md-6 text-right text-center-res">
             <Link
               to={`/profile/courses/attendance/semester/${semesterName}`}
-              className="btn btn-outline-info btn-sm mb-res-2"
+              className="btn btn-outline-info btn-sm mb-res-2 mr-5 mr-n-0"
             >
               Semester Attendance
             </Link>
           </div>
         </div>
 
-        <table className="table table-sm table-responsive table-hover">
+        <table className="table table-sm table-responsive-sm table-hover">
           <thead>
             <tr>
               <th>#</th>

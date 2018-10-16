@@ -176,6 +176,23 @@ export const deleteCourseAttendance = courseID => dispatch => {
     );
 };
 
+export const deleteSemesterAttendance = semester => dispatch => {
+  axios
+    .delete(`/profile/courses/attendance/semester/${semester}`)
+    .then(res =>
+      dispatch({
+        type: SEMESTER_ATTENDANCE,
+        payload: res.data
+      })
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
 export const getOverallAttendance = () => dispatch => {
   dispatch(setCourseLoading());
   axios

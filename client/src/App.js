@@ -21,10 +21,11 @@ import AddCourse from "./components/course/AddCourse";
 import Courses from "./components/course/Courses";
 import CourseAttendance from "./components/course/CourseAttendance";
 import AllAttendance from "./components/course/AllAttendance";
-import CoursesResults from "./components/course/CoursesResults";
+
 import EditCourse from "./components/course/EditCourse";
 
 import SemesterResults from "./components/semester/SemesterResults";
+import currentSemester from "./components/semester/CurrentSemester";
 
 import SemesterAttendance from "./components/course/semesterAttendance";
 
@@ -126,6 +127,13 @@ class App extends Component {
                   exact
                   path="/profile/courses/attendance/semester/:semester"
                   component={SemesterAttendance}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/profile/Semester"
+                  component={currentSemester}
                 />
               </Switch>
             </div>

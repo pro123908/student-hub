@@ -275,10 +275,12 @@ router.post(
         attendance.classesHeld = record.classesHeld + Number(req.body.held);
         attendance.classesTaken = record.classesTaken + Number(req.body.taken);
         attendance.classesLeft = record.classesLeft + Number(req.body.left);
+        attendance.date = Date.now();
       } else {
         attendance.classesHeld = Number(req.body.held);
         attendance.classesTaken = Number(req.body.taken);
         attendance.classesLeft = Number(req.body.left);
+        attendance.date = Date.now();
       }
 
       profile.courses[courseIndex].attendance = attendance;
@@ -407,9 +409,6 @@ function getCGPA(course) {
   GPAs = GPAs.reduce((acc, nextVal) => {
     return acc + nextVal;
   });
-
-  console.log(GPAs);
-  console.log(creditHours);
 
   return (GPAs / creditHours).toFixed(2);
 }

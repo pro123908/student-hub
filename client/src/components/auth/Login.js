@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { loginUser } from "../../actions/authActions";
 
 import TextFieldGroup from "../common/TextFieldGroup";
+import Spinner from "../common/Spinner";
 
 class Login extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
+      isSubmit: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -31,7 +33,7 @@ class Login extends Component {
     }
 
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({ isSubmit: false, errors: nextProps.errors });
     }
   }
 
@@ -48,39 +50,51 @@ class Login extends Component {
     };
 
     this.props.loginUser(user);
+    this.setState({ isSubmit: true });
   }
   render() {
     const { errors } = this.state;
+
+    let loginContent;
+
+    if (this.state.isSubmit) {
+      loginContent = <Spinner />;
+    } else {
+      loginContent = (
+        <div>
+          <h1 className="display-4 text-center">Log In</h1>
+          <p className="lead text-center">
+            Sign in to your Student Hub account
+          </p>
+          <form noValidate onSubmit={this.onSubmit}>
+            <TextFieldGroup
+              name="email"
+              placeholder="Email Address"
+              value={this.state.email}
+              onChange={this.onChange}
+              error={errors.email}
+            />
+
+            <TextFieldGroup
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={this.state.password}
+              onChange={this.onChange}
+              error={errors.password}
+            />
+
+            <input type="submit" className="btn btn-info btn-block mt-4" />
+          </form>
+        </div>
+      );
+    }
+
     return (
       <div className="login">
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Log In</h1>
-              <p className="lead text-center">
-                Sign in to your Student Hub account
-              </p>
-              <form noValidate onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  name="email"
-                  placeholder="Email Address"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  error={errors.email}
-                />
-
-                <TextFieldGroup
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                  error={errors.password}
-                />
-
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
-            </div>
+            <div className="col-md-8 m-auto">{loginContent}</div>
           </div>
         </div>
       </div>

@@ -97,7 +97,7 @@ class editProfile extends Component {
       { label: "Second Semester", value: "Second Semester" },
       { label: "Third Semester", value: "Third Semester" },
       { label: "Fourth Semester", value: "Fourth Semester" },
-      { label: "Fiveth Semester", value: "Fiveth Semester" },
+      { label: "Fivth Semester", value: "Fivth Semester" },
       { label: "Sixth Semester", value: "Sixth Semester" },
       { label: "Seventh Semester", value: "Seventh Semester" },
       { label: "Final Semester", value: "Final Semester" }

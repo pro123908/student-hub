@@ -14,7 +14,6 @@ class Dashboard extends Component {
     const { profile, loading, courses } = this.props.profile;
 
     let dashboardContent;
-    let coursesResult = true;
 
     if (profile === null || loading) {
       dashboardContent = (

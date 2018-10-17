@@ -8,7 +8,7 @@ import {
   getProfile
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
-import CourseItem from "./CourseItem";
+
 import SemesterResult from "../semester/SemesterResult";
 
 class Courses extends Component {

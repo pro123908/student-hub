@@ -5,6 +5,7 @@ import { withRouter } from "react-router-dom";
 import { registerUser } from "../../actions/authActions";
 
 import TextFieldGroup from "../common/TextFieldGroup";
+import Spinner from "../common/Spinner";
 
 class Register extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ class Register extends Component {
       email: "",
       password: "",
       password2: "",
-      errors: {}
+      errors: {},
+      isSubmit: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -30,7 +32,7 @@ class Register extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
+      this.setState({ isSubmit: false, errors: nextProps.errors });
     }
   }
 
@@ -49,60 +51,69 @@ class Register extends Component {
     };
 
     this.props.registerUser(newUser, this.props.history);
+    this.setState({ isSubmit: true });
   }
 
   render() {
     const { errors } = this.state;
 
+    let registerContent;
+
+    if (this.state.isSubmit) {
+      registerContent = <Spinner />;
+    } else {
+      registerContent = (
+        <div>
+          <h1 className="display-4 text-center">Sign Up</h1>
+          <p className="lead text-center">Create your Student Hub account</p>
+          <form noValidate onSubmit={this.onSubmit}>
+            <TextFieldGroup
+              name="name"
+              placeholder="Name"
+              value={this.state.name}
+              onChange={this.onChange}
+              error={errors.name}
+            />
+
+            <TextFieldGroup
+              name="email"
+              placeholder="Email Address"
+              value={this.state.email}
+              onChange={this.onChange}
+              error={errors.email}
+              info=" This site uses Gravatar so if you want a profile image, use
+                  a Gravatar email"
+            />
+
+            <TextFieldGroup
+              name="password"
+              type="password"
+              placeholder="Password"
+              value={this.state.password}
+              onChange={this.onChange}
+              error={errors.password}
+            />
+
+            <TextFieldGroup
+              name="password2"
+              type="password"
+              placeholder="Confirm Password"
+              value={this.state.password2}
+              onChange={this.onChange}
+              error={errors.password2}
+            />
+
+            <input type="submit" className="btn btn-info btn-block mt-4" />
+          </form>
+        </div>
+      );
+    }
+
     return (
       <div className="register">
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">
-                Create your Student Hub account
-              </p>
-              <form noValidate onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  name="name"
-                  placeholder="Name"
-                  value={this.state.name}
-                  onChange={this.onChange}
-                  error={errors.name}
-                />
-
-                <TextFieldGroup
-                  name="email"
-                  placeholder="Email Address"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  error={errors.email}
-                  info=" This site uses Gravatar so if you want a profile image, use
-                  a Gravatar email"
-                />
-
-                <TextFieldGroup
-                  name="password"
-                  type="password"
-                  placeholder="Password"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                  error={errors.password}
-                />
-
-                <TextFieldGroup
-                  name="password2"
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={this.state.password2}
-                  onChange={this.onChange}
-                  error={errors.password2}
-                />
-
-                <input type="submit" className="btn btn-info btn-block mt-4" />
-              </form>
-            </div>
+            <div className="col-md-8 m-auto">{registerContent}</div>
           </div>
         </div>
       </div>

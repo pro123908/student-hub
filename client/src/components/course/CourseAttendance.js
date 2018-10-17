@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import Moment from "react-moment";
 import {
   getCourseAttendance,
   updateCourseAttendance,
@@ -74,6 +75,7 @@ class CourseAttendance extends Component {
     if (course === null || loading) {
       courseAttendanceContent = <Spinner />;
     } else {
+      console.log(course.attendance.date);
       courseAttendanceContent = (
         <div>
           <Link to="/profile/courses" className="btn btn-light mb-4">
@@ -134,6 +136,11 @@ class CourseAttendance extends Component {
             >
               Left
             </button>
+          </div>
+          <div className="p-2 text-muted">
+            <small>
+              Last modified : <Moment fromNow>{course.attendance.date}</Moment>
+            </small>
           </div>
         </div>
       );

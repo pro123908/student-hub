@@ -5,11 +5,54 @@ import { Link } from "react-router-dom";
 import { getCourses, getProfile } from "../../actions/profileActions";
 import SemesterResult from "./SemesterResult";
 import Spinner from "../common/Spinner";
+import Chart from "../layout/Chart";
 
 class SemesterResults extends Component {
   componentDidMount() {
     this.props.getCourses();
     this.props.getProfile();
+  }
+
+  getSemestersGPA(courses) {
+    let firstSemGPA = this.getCGPA(
+      courses.filter(course => course.semester === "First")
+    );
+    let secondSemGPA = this.getCGPA(
+      courses.filter(course => course.semester === "Second")
+    );
+
+    let thirdSemGPA = this.getCGPA(
+      courses.filter(course => course.semester === "Third")
+    );
+
+    return {
+      firstSemGPA,
+      secondSemGPA,
+      thirdSemGPA
+    };
+  }
+
+  drawChart(gpaCourses) {
+    const { firstSemGPA, secondSemGPA, thirdSemGPA } = this.getSemestersGPA(
+      gpaCourses
+    );
+
+    let chartData = {
+      labels: ["1st", "2nd", "3rd"],
+      datasets: [
+        {
+          label: "Result",
+          data: [firstSemGPA, secondSemGPA, thirdSemGPA, 3],
+          backgroundColor: [
+            "rgba(0, 123, 255,0.8)",
+            "rgba(40, 167, 69,0.8)",
+            "rgba(220, 53, 69,0.8)"
+          ]
+        }
+      ]
+    };
+
+    return <Chart chartData={chartData} type="Bar" height={100} />;
   }
 
   getCGPA(course) {
@@ -28,8 +71,6 @@ class SemesterResults extends Component {
       return acc + nextVal;
     });
 
-    console.log(GPAs);
-    console.log(creditHours);
     return (GPAs / creditHours).toFixed(2);
   }
 
@@ -37,7 +78,8 @@ class SemesterResults extends Component {
     const { courses, loading, profile } = this.props.profile;
 
     let semesterContent;
-    let CGPA = null;
+    let CGPA = null,
+      chart;
 
     if (profile === null) {
       semesterContent = (
@@ -67,6 +109,7 @@ class SemesterResults extends Component {
         if (Object.keys(courses).length > 0) {
           const gpaCourses = courses.filter(course => course.GPA !== 0);
           if (gpaCourses.length > 0) {
+            chart = this.drawChart(gpaCourses);
             CGPA = this.getCGPA(gpaCourses);
           }
 
@@ -151,9 +194,14 @@ class SemesterResults extends Component {
                 ""
               )}
               {CGPA ? (
-                <div className="row">
-                  <div className="col md-12 m-auto text-center">
-                    <h1>Overall CGPA : {CGPA}</h1>
+                <div>
+                  <div className="row">
+                    <div className="col md-12 m-auto text-center">
+                      <h1>Overall CGPA : {CGPA}</h1>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-12 ">{chart}</div>
                   </div>
                 </div>
               ) : (

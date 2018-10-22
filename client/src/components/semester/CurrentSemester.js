@@ -80,15 +80,16 @@ class CurrentSemester extends Component {
           currentSemesterContent = (
             <div>
               <h3>Attendance</h3>
-              <table className="table table-sm table-responsive-sm table-hover">
+              <table className="table table-sm table-responsive-sm table-hover text-center">
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Course</th>
+                    <th className="text-left">Course</th>
                     <th>Held</th>
                     <th>Taken</th>
                     <th>Left</th>
                     <th>Percentage</th>
+                    <th>Attendance</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -105,6 +106,7 @@ class CurrentSemester extends Component {
                         semAttendance.classesHeld
                       )}
                     </td>
+                    <td />
                     {}
                   </tr>
                 </tbody>
@@ -112,12 +114,14 @@ class CurrentSemester extends Component {
             </div>
           );
         } else {
-          <div className="col-md-12 m-auto text-center">
-            <h2>No Course Added</h2>
-            <Link to="/profile/addCourse" className="btn btn-success mt-2">
-              Add Course
-            </Link>
-          </div>;
+          currentSemesterContent = (
+            <div className="col-md-12 m-auto text-center">
+              <h2>No Course Added</h2>
+              <Link to="/profile/addCourse" className="btn btn-success mt-2">
+                Add Course
+              </Link>
+            </div>
+          );
         }
       }
     }

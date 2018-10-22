@@ -7,8 +7,42 @@ import {
   deleteSemesterAttendance
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
+import Chart from "../layout/Chart";
 
 class semesterAttendance extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chartData: {}
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.profile.semesterAttendance) {
+      let semesterAttendance = nextProps.profile.semesterAttendance;
+      this.setState({
+        chartData: {
+          labels: ["Held", "Taken", "Left"],
+          datasets: [
+            {
+              label: "Attendance",
+              data: [
+                semesterAttendance.classesHeld,
+                semesterAttendance.classesTaken,
+                semesterAttendance.classesLeft
+              ],
+              backgroundColor: [
+                "rgba(0, 123, 255,0.8)",
+                "rgba(40, 167, 69,0.8)",
+                "rgba(220, 53, 69,0.8)"
+              ]
+            }
+          ]
+        }
+      });
+    }
+  }
+
   componentDidMount() {
     if (this.props.match.params.semester) {
       this.props.getSemesterAttendance(this.props.match.params.semester);
@@ -54,25 +88,31 @@ class semesterAttendance extends Component {
           </div>
 
           <hr />
-          <div className="ml-4">
-            <p className="lead text-primary">
-              Held : {semesterAttendance.classesHeld}
-            </p>
-            <p className="lead text-success">
-              Taken : {semesterAttendance.classesTaken}
-            </p>
-            <p className="lead text-danger">
-              Left : {semesterAttendance.classesLeft}
-            </p>
-            <p className="lead text-secondary">
-              Percentage :{" "}
-              {this.getPercentage(
-                semesterAttendance.classesTaken,
-                semesterAttendance.classesHeld
-              )}
-              %
-            </p>
+          <div className="row align-items-center">
+            <div className="ml-4 col-md-4 ">
+              <p className="lead text-primary">
+                Held : {semesterAttendance.classesHeld}
+              </p>
+              <p className="lead text-success">
+                Taken : {semesterAttendance.classesTaken}
+              </p>
+              <p className="lead text-danger">
+                Left : {semesterAttendance.classesLeft}
+              </p>
+              <p className="lead text-secondary">
+                Percentage :{" "}
+                {this.getPercentage(
+                  semesterAttendance.classesTaken,
+                  semesterAttendance.classesHeld
+                )}
+                %
+              </p>
+            </div>
+            <div className="col-md-6">
+              <Chart height={100} chartData={this.state.chartData} />
+            </div>
           </div>
+
           <hr />
           <div>
             <h4 className="mb-3">Check Individual Attendances</h4>

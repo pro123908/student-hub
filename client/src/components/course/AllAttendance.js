@@ -4,19 +4,45 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { getOverallAttendance } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
+import getPercentage from "../../functions/getPercentage";
+import Chart from "../layout/Chart";
 
 class AllAttendance extends Component {
-  componentDidMount() {
-    this.props.getOverallAttendance();
+  constructor(props) {
+    super(props);
+    this.state = {
+      chartData: {}
+    };
   }
 
-  getPercentage(val1, val2) {
-    let result = ((val1 * 100) / val2).toFixed(2);
-
-    if (isNaN(result)) {
-      return 0;
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.profile.allAttendance) {
+      let allAttendance = nextProps.profile.allAttendance;
+      this.setState({
+        chartData: {
+          labels: ["Held", "Taken", "Left"],
+          datasets: [
+            {
+              label: "Attendance",
+              data: [
+                allAttendance.classesHeld,
+                allAttendance.classesTaken,
+                allAttendance.classesLeft
+              ],
+              backgroundColor: [
+                "rgba(0, 123, 255,0.8)",
+                "rgba(40, 167, 69,0.8)",
+                "rgba(220, 53, 69,0.8)"
+              ]
+            }
+          ]
+        }
+      });
     }
-    return result;
+  }
+
+  componentDidMount() {
+    this.props.getOverallAttendance();
   }
 
   render() {
@@ -31,25 +57,31 @@ class AllAttendance extends Component {
         <div>
           <h1 className="mb-4">Overall Attendance</h1>
           <hr />
-          <div className="ml-4">
-            <p className="lead text-primary">
-              Held : {allAttendance.classesHeld}
-            </p>
-            <p className="lead text-success">
-              Taken : {allAttendance.classesTaken}
-            </p>
-            <p className="lead text-danger">
-              Left : {allAttendance.classesLeft}
-            </p>
-            <p className="lead text-secondary">
-              Percentage :{" "}
-              {this.getPercentage(
-                allAttendance.classesTaken,
-                allAttendance.classesHeld
-              )}
-              %
-            </p>
+          <div className="row align-items-center">
+            <div className="ml-4 col-md-4">
+              <p className="lead text-primary">
+                Held : {allAttendance.classesHeld}
+              </p>
+              <p className="lead text-success">
+                Taken : {allAttendance.classesTaken}
+              </p>
+              <p className="lead text-danger">
+                Left : {allAttendance.classesLeft}
+              </p>
+              <p className="lead text-secondary">
+                Percentage :{" "}
+                {getPercentage(
+                  allAttendance.classesTaken,
+                  allAttendance.classesHeld
+                )}
+                %
+              </p>
+            </div>
+            <div className="col-md-6">
+              <Chart height={100} chartData={this.state.chartData} />
+            </div>
           </div>
+
           <hr />
           <div>
             <h4 className="mb-3">Check Individual Attendances</h4>

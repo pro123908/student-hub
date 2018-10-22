@@ -69,7 +69,6 @@ class SemesterResult extends Component {
               <th>Actions</th>
             </tr>
           </thead>
-
           <tbody>
             {courseItem}
             {courseDisplay ? (

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class SemesterCourse extends Component {
   getPercentage(val1, val2) {
@@ -16,7 +17,7 @@ class SemesterCourse extends Component {
     return (
       <tr>
         <td>{index + 1}</td>
-        <td>{course.name}</td>
+        <td className="text-left">{course.name}</td>
         <td>{course.attendance.classesHeld}</td>
         <td>{course.attendance.classesTaken}</td>
         <td>{course.attendance.classesLeft}</td>
@@ -25,6 +26,14 @@ class SemesterCourse extends Component {
             course.attendance.classesTaken,
             course.attendance.classesHeld
           )}{" "}
+        </td>
+        <td>
+          <Link
+            to={`/profile/courses/attendance/${course._id}`}
+            className="btn btn-info btn-sm btn-block"
+          >
+            Manage
+          </Link>
         </td>
       </tr>
     );

@@ -8,8 +8,8 @@ import {
   getProfile
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
-
 import SemesterResult from "../semester/SemesterResult";
+// import PerformChecks from "./PerformChecks";
 
 class Courses extends Component {
   componentDidMount() {

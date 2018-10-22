@@ -9,6 +9,8 @@ import {
   deleteCourseAttendance
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
+import Chart from "../layout/Chart";
+import getPercentage from "../../functions/getPercentage";
 
 class CourseAttendance extends Component {
   constructor(props) {
@@ -18,13 +20,41 @@ class CourseAttendance extends Component {
       held: "",
       taken: "",
       left: "",
-      percentage: ""
+      percentage: "",
+      chartData: {}
     };
   }
 
   componentDidMount() {
     if (this.props.match.params.courseID) {
       this.props.getCourseAttendance(this.props.match.params.courseID);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.profile.course) {
+      console.log(nextProps.profile.course.attendance);
+      let attendance = nextProps.profile.course.attendance;
+      this.setState({
+        chartData: {
+          labels: ["Held", "Taken", "Left"],
+          datasets: [
+            {
+              label: "Attendance",
+              data: [
+                attendance.classesHeld,
+                attendance.classesTaken,
+                attendance.classesLeft
+              ],
+              backgroundColor: [
+                "rgba(0, 123, 255,0.8)",
+                "rgba(40, 167, 69,0.8)",
+                "rgba(220, 53, 69,0.8)"
+              ]
+            }
+          ]
+        }
+      });
     }
   }
 
@@ -54,15 +84,6 @@ class CourseAttendance extends Component {
     );
   }
 
-  getPercentage(val1, val2) {
-    let result = ((val1 * 100) / val2).toFixed(2);
-
-    if (isNaN(result)) {
-      return 0;
-    }
-    return result;
-  }
-
   onReset(id) {
     this.props.deleteCourseAttendance(id);
   }
@@ -75,14 +96,13 @@ class CourseAttendance extends Component {
     if (course === null || loading) {
       courseAttendanceContent = <Spinner />;
     } else {
-      console.log(course.attendance.date);
       courseAttendanceContent = (
         <div>
           <Link to="/profile/courses" className="btn btn-light mb-4">
             Back to courses
           </Link>
           <div>
-            <div className="row mb-4">
+            <div className="row mb-4 ">
               <h1 className="col-md-10">{course.name} Attendance</h1>
               <div className="col-md-2">
                 <button
@@ -95,24 +115,29 @@ class CourseAttendance extends Component {
             </div>
 
             <hr />
-            <div className="ml-4">
-              <p className="lead text-primary">
-                Held : {course.attendance.classesHeld}
-              </p>
-              <p className="lead text-success">
-                Taken : {course.attendance.classesTaken}
-              </p>
-              <p className="lead text-danger">
-                Left : {course.attendance.classesLeft}
-              </p>
-              <p className="lead text-secondary">
-                Percentage :{" "}
-                {this.getPercentage(
-                  course.attendance.classesTaken,
-                  course.attendance.classesHeld
-                )}
-                %
-              </p>
+            <div className="row align-items-center">
+              <div className="ml-4 col-md-4">
+                <p className="lead text-primary">
+                  Held : {course.attendance.classesHeld}
+                </p>
+                <p className="lead text-success">
+                  Taken : {course.attendance.classesTaken}
+                </p>
+                <p className="lead text-danger">
+                  Left : {course.attendance.classesLeft}
+                </p>
+                <p className="lead text-secondary">
+                  Percentage :{" "}
+                  {getPercentage(
+                    course.attendance.classesTaken,
+                    course.attendance.classesHeld
+                  )}
+                  %{" "}
+                </p>
+              </div>
+              <div className="col-md-6">
+                <Chart height={100} chartData={this.state.chartData} />
+              </div>
             </div>
           </div>
           <hr />

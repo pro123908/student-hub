@@ -43,13 +43,23 @@ class AddCourse extends Component {
       .filter(course => course.name === this.state.name)
       .map(course => course)[0];
 
+    let gpa = null;
+
+    if (this.state.GPA) {
+      let result = Courses.filter(
+        course => course.name === this.state.name
+      ).map(course => course.ch);
+
+      gpa = parseFloat(this.state.GPA) / parseInt(result);
+    }
+
     const newCourse = {
       name: this.state.name,
       code: info.code,
       ch: info.ch,
       teacher: this.state.teacher,
       semester: this.state.semester,
-      gpa: this.state.GPA
+      gpa: gpa ? gpa : ""
     };
 
     this.props.addCourse(newCourse, this.props.history);
@@ -197,7 +207,7 @@ class AddCourse extends Component {
 
                   <TextFieldGroup
                     name="GPA"
-                    placeholder="GPA (Optional)"
+                    placeholder="GPs (Optional)"
                     value={this.state.GPA}
                     error={errors.GPA}
                     onChange={this.onChange}

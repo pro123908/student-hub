@@ -6,6 +6,7 @@ import { editCourse, getCourse } from "../../actions/profileActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import SelectListGroup from "../common/SelectListGroup";
 import Spinner from "../common/Spinner";
+import Courses from "./courses.json";
 
 class EditCourse extends Component {
   constructor(props) {
@@ -56,15 +57,24 @@ class EditCourse extends Component {
   onSubmit(e) {
     e.preventDefault();
 
+    let gpa = null;
+
+    if (this.state.GPA) {
+      let result = Courses.filter(
+        course => course.name === this.state.name
+      ).map(course => course.ch);
+
+      gpa = parseFloat(this.state.GPA) / parseInt(result);
+    }
+
     const editCourse = {
       name: this.state.name,
       code: this.state.code,
       ch: this.state.ch,
       teacher: this.state.teacher,
       semester: this.state.semester,
-      gpa: this.state.GPA
+      gpa: gpa ? gpa : ""
     };
-    console.log(editCourse);
 
     this.props.editCourse(
       editCourse,
@@ -149,7 +159,7 @@ class EditCourse extends Component {
 
             <TextFieldGroup
               name="GPA"
-              placeholder="GPA (Optional)"
+              placeholder="GPs (Optional)"
               value={this.state.GPA}
               error={errors.GPA}
               onChange={this.onChange}

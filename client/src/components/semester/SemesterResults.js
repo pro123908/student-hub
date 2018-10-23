@@ -25,28 +25,37 @@ class SemesterResults extends Component {
       courses.filter(course => course.semester === "Third")
     );
 
+    let fourthSemGPA = this.getCGPA(
+      courses.filter(course => course.semester === "Fourth")
+    );
+
     return {
       firstSemGPA,
       secondSemGPA,
-      thirdSemGPA
+      thirdSemGPA,
+      fourthSemGPA
     };
   }
 
   drawChart(gpaCourses) {
-    const { firstSemGPA, secondSemGPA, thirdSemGPA } = this.getSemestersGPA(
-      gpaCourses
-    );
+    const {
+      firstSemGPA,
+      secondSemGPA,
+      thirdSemGPA,
+      fourthSemGPA
+    } = this.getSemestersGPA(gpaCourses);
 
     let chartData = {
-      labels: ["1st", "2nd", "3rd"],
+      labels: ["1st", "2nd", "3rd", "4th"],
       datasets: [
         {
           label: "Result",
-          data: [firstSemGPA, secondSemGPA, thirdSemGPA, 3],
+          data: [firstSemGPA, secondSemGPA, thirdSemGPA, fourthSemGPA, 2],
           backgroundColor: [
             "rgba(0, 123, 255,0.8)",
             "rgba(40, 167, 69,0.8)",
-            "rgba(220, 53, 69,0.8)"
+            "rgba(220, 53, 69,0.8)",
+            "rgba(255, 193, 7,0.8)"
           ]
         }
       ]

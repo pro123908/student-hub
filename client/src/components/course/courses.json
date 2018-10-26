@@ -1,0 +1,143 @@
+[
+  { "name": "Calculus", "code": "MT-173", "ch": "3", "sem": "first" },
+  { "name": "Pakistan Studies", "code": "HS-105", "ch": "2", "sem": "first" },
+  { "name": "Functional English", "code": "HS-104", "ch": "3", "sem": "first" },
+  { "name": "Fundamentals of IT", "code": "CT-174", "ch": "3", "sem": "first" },
+  {
+    "name": "Discrete Structures",
+    "code": "CT-162",
+    "ch": "3",
+    "sem": "first"
+  },
+  {
+    "name": "Programming Languages",
+    "code": "CT-153",
+    "ch": "3",
+    "sem": "first"
+  },
+  { "name": "OOC & Programming", "code": "SE-201", "ch": "4", "sem": "second" },
+  { "name": "Applied Physics", "code": "PH-122", "ch": "4", "sem": "second" },
+  { "name": "Islamic Studies", "code": "HS-205", "ch": "2", "sem": "second" },
+  { "name": "Basic Electronics", "code": "EL-134", "ch": "4", "sem": "second" },
+  {
+    "name": "DSA & Applications",
+    "code": "CT-157",
+    "ch": "4",
+    "sem": "second"
+  },
+  {
+    "name": "Software Engineering",
+    "code": "SE-207",
+    "ch": "3",
+    "sem": "third"
+  },
+  { "name": "Computer Graphics", "code": "SE-202", "ch": "4", "sem": "third" },
+  {
+    "name": "Differential Equations & Linear Algebra",
+    "code": "MT-273",
+    "ch": "3",
+    "sem": "third"
+  },
+  {
+    "name": "Business Communication & Ethics",
+    "code": "HS-208",
+    "ch": "3",
+    "sem": "third"
+  },
+  {
+    "name": "Logic Design & Switching Theory",
+    "code": "CS-251",
+    "ch": "4",
+    "sem": "third"
+  },
+  {
+    "name": "Computer Architecture & Organization",
+    "code": "CS-252",
+    "ch": "4",
+    "sem": "fourth"
+  },
+  {
+    "name": "Financial & Cost Accounting",
+    "code": "CT-258",
+    "ch": "3",
+    "sem": "fourth"
+  },
+  {
+    "name": "Software Requirement Engineering",
+    "code": "SE-208",
+    "ch": "3",
+    "sem": "fourth"
+  },
+  {
+    "name": "Database Management Systems",
+    "code": "SE-204",
+    "ch": "4",
+    "sem": "fourth"
+  },
+  { "name": "Web Engineering", "code": "SE-206", "ch": "4", "sem": "fourth" },
+  {
+    "name": "Applied Economics For Engineers",
+    "code": "IF-301",
+    "ch": "3",
+    "sem": "fivth"
+  },
+  {
+    "name": "Probability & Statistics",
+    "code": "MT-331",
+    "ch": "3",
+    "sem": "fivth"
+  },
+  {
+    "name": "Software Design & Architecture",
+    "code": "SE-308",
+    "ch": "3",
+    "sem": "fivth"
+  },
+  {
+    "name": "Human Computer Interaction",
+    "code": "SE-302",
+    "ch": "3",
+    "sem": "fivth"
+  },
+  { "name": "Operating Systems", "code": "SE-303", "ch": "4", "sem": "fivth" },
+  {
+    "name": "Computer Communication Networks",
+    "code": "CS-351",
+    "ch": "4",
+    "sem": "sixth"
+  },
+  {
+    "name": "Artificial Intelligence & Expert Systems",
+    "code": "CT-361",
+    "ch": "4",
+    "sem": "sixth"
+  },
+  {
+    "name": "Software Quality Engineering",
+    "code": "SE-309",
+    "ch": "3",
+    "sem": "sixth"
+  },
+  {
+    "name": "Software Project Management",
+    "code": "SE-310",
+    "ch": "3",
+    "sem": "sixth"
+  },
+  { "name": "E-Commerce", "code": "SE-311", "ch": "3", "sem": "sixth" },
+  { "name": "Network & Information Security", "sem": "seventh" },
+  { "name": "Distributed Computing", "sem": "seventh" },
+  { "name": "Modeling & Simulation", "sem": "seventh" },
+  { "name": "Data Warehousing & Minning", "sem": "seventh" },
+  { "name": "Software Engineering Project", "sem": "seventh" },
+  { "name": "Entrepreneruship", "sem": "final" },
+  { "name": "Numerical Method", "sem": "final" },
+  { "name": "Design Patterns", "sem": "final" },
+  {
+    "name": "Software Testing, Strategies & Techniques (Elective)",
+    "sem": "final"
+  },
+  { "name": "Software Reliability Engineering  (Elective)", "sem": "final" },
+  { "name": "Information Systems Engineering  (Elective)", "sem": "final" },
+  { "name": "Software Engineering Project", "sem": "final" }
+]

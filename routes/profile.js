@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-const User = require("../models/User");
 const Profile = require("../models/Profile");
 
+//For validating inputs
 const validateProfileInputs = require("../validation/profile");
 const validateCourseInputs = require("../validation/course");
 
@@ -20,7 +20,10 @@ router.post(
     if (!isValid) {
       return res.status(400).json(errors);
     }
+
+    //Making profile object and adding properties in it
     profileFields = {};
+    // ID of current user
     profileFields.user = req.user.id;
 
     if (req.body.handle) profileFields.handle = req.body.handle;
@@ -30,20 +33,24 @@ router.post(
     if (req.body.semester) profileFields.semester = req.body.semester;
     if (req.body.phone) profileFields.phone = req.body.phone;
 
+    
     Profile.findOne({ user: req.user.id }).then(profile => {
+      // If profile already exists then just update it
       if (profile) {
         Profile.findOneAndUpdate(
           { user: req.user.id },
-          { $set: profileFields },
+          { $set: profileFields }, // All the fields
           { new: true }
         ).then(profile => res.json(profile));
       } else {
+        // Checking if handle is already booked?
         Profile.findOne({ handle: profileFields.handle }).then(profile => {
           if (profile) {
             errors.handle = "Handle Already Exists";
             return res.status(400).json(errors);
           }
 
+          //Creating new profile with all the properties
           new Profile(profileFields).save().then(profile => res.json(profile));
         });
       }
@@ -59,19 +66,24 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id })
-      .populate("user", ["name", "avatar", "email"])
+      .populate("user", ["name", "avatar", "email"]) // Adding properties
       .then(profile => {
         if (profile) {
+          // Calculating CGPA to display on profile
           let CGPA = 0;
+          // if profile has any courses?
           if (Object.keys(profile.courses).length > 0) {
+            //Filtering the courses to find those which have GPA 
             const gpaCourses = profile.courses.filter(
               course => course.GPA !== 0
             );
             if (gpaCourses.length > 0) {
+              // Calling the function if there are any GPA courses
               CGPA = getCGPA(gpaCourses);
             }
           }
 
+          // Making the profile object with all the required info to send as a response
           const userProfile = {
             name: profile.user.name,
             email: profile.user.email,
@@ -82,7 +94,7 @@ router.get(
             year: profile.year,
             semester: profile.semester,
             phone: profile.phone,
-            CGPA
+            CGPA 
           };
 
           res.json(userProfile);

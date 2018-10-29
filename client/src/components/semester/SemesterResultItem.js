@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 class SemesterResultItem extends Component {
   render() {
-    const { course, index, courseDisplay, onDelete } = this.props;
+    const { course, index, courseDisplay, onDelete,flag } = this.props;
 
     return (
       <tr>
@@ -12,7 +12,7 @@ class SemesterResultItem extends Component {
         <td>{course.code}</td>
         <td>{course.ch}</td>
         <td>{course.teacher}</td>
-        {courseDisplay ? (
+        {courseDisplay && !flag ? (
           <td>
             <Link
               to={`/profile/courses/attendance/${course._id}`}
@@ -24,7 +24,7 @@ class SemesterResultItem extends Component {
         ) : (
           <td>{course.GPA.toFixed(2)}</td>
         )}
-        {courseDisplay ? (
+        {courseDisplay && !flag ?  (
           <td>
             <Link
               to={`/profile/courses/edit/${course._id}`}

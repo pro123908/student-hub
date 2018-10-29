@@ -104,6 +104,7 @@ class EditCourse extends Component {
       editCourseContent = <Check flag={1} />
     } else {
       editCourseContent = (
+      <div className='row'>
         <div className="col-md-8 m-auto">
           <Link to="/profile/courses" className="btn btn-light">
             Back to courses
@@ -164,13 +165,15 @@ class EditCourse extends Component {
             <input type="submit" className="btn btn-info btn-block mt-4" />
           </form>
         </div>
+      </div>
+        
       );
     }
     return (
       <div>
         <div className="add-course">
           <div className="container">
-            <div className="row">{editCourseContent}</div>
+            {editCourseContent}
           </div>
         </div>
       </div>

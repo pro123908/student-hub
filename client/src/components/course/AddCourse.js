@@ -50,7 +50,7 @@ class AddCourse extends Component {
         course => course.name === this.state.name
       ).map(course => course.ch);
 
-      gpa = parseFloat(this.state.GPA) / parseInt(result);
+      gpa = parseFloat(this.state.GPA) / parseInt(result,10);
     }
 
     const newCourse = {

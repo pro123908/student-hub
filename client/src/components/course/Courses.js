@@ -7,9 +7,8 @@ import {
   deleteCourse,
   getProfile
 } from "../../actions/profileActions";
-import Spinner from "../common/Spinner";
-import SemesterResult from "../semester/SemesterResult";
 import Check from '../Check';
+import CourseRender from "../CourseRender";
 
 class Courses extends Component {
   componentDidMount() {
@@ -36,31 +35,8 @@ class Courses extends Component {
         coursesContent = <Check flag={1} />
       } else {
         if (Object.keys(courses).length > 0) {
-          let firstSemester = courses.filter(
-            course => course.semester === "First"
-          );
-          let secondSemester = courses.filter(
-            course => course.semester === "Second"
-          );
-          let thirdSemester = courses.filter(
-            course => course.semester === "Third"
-          );
-          let fourthSemester = courses.filter(
-            course => course.semester === "Fourth"
-          );
-          let fivethSemester = courses.filter(
-            course => course.semester === "Fivth"
-          );
-          let sixthSemester = courses.filter(
-            course => course.semester === "Sixth"
-          );
-          let seventhSemester = courses.filter(
-            course => course.semester === "Seventh"
-          );
-          let finalSemester = courses.filter(
-            course => course.semester === "Final"
-          );
 
+          let courseRender = <CourseRender courses={courses} onDelete={this.onDelete.bind(this)} />
           coursesContent = (
             <div>
               <div className="row">
@@ -80,86 +56,8 @@ class Courses extends Component {
                   </Link>
                 </div>
               </div>
-              {firstSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="First"
-                  course={firstSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {secondSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Second"
-                  course={secondSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {thirdSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Third"
-                  course={thirdSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {fourthSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Fourth"
-                  course={fourthSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {fivethSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Fivth"
-                  course={fivethSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {sixthSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Sixth"
-                  course={sixthSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {seventhSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Seventh"
-                  course={seventhSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
-              {finalSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Final"
-                  course={finalSemester}
-                  courseDisplay={true}
-                  onDelete={this.onDelete.bind(this)}
-                />
-              ) : (
-                ""
-              )}
+              {courseRender}
+              
             </div>
           );
         } else {

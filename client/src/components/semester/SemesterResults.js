@@ -3,10 +3,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { getCourses, getProfile } from "../../actions/profileActions";
-import SemesterResult from "./SemesterResult";
-import Spinner from "../common/Spinner";
 import Chart from "../layout/Chart";
 import Check from "../Check";
+import CourseRender from "../CourseRender";
 
 class SemesterResults extends Component {
   componentDidMount() {
@@ -106,30 +105,8 @@ class SemesterResults extends Component {
             CGPA = this.getCGPA(gpaCourses);
           }
 
-          let firstSemester = gpaCourses.filter(
-            course => course.semester === "First"
-          );
-          let secondSemester = gpaCourses.filter(
-            course => course.semester === "Second"
-          );
-          let thirdSemester = gpaCourses.filter(
-            course => course.semester === "Third"
-          );
-          let fourthSemester = gpaCourses.filter(
-            course => course.semester === "Fourth"
-          );
-          let fivethSemester = gpaCourses.filter(
-            course => course.semester === "Fiveth"
-          );
-          let sixthSemester = gpaCourses.filter(
-            course => course.semester === "Sixth"
-          );
-          let seventhSemester = gpaCourses.filter(
-            course => course.semester === "Seventh"
-          );
-          let finalSemester = gpaCourses.filter(
-            course => course.semester === "Final"
-          );
+         let courseRender =  <CourseRender courses={gpaCourses} flag={1} /> 
+
 
           semesterContent = (
             <div>
@@ -142,50 +119,8 @@ class SemesterResults extends Component {
               ) : (
                 ""
               )}
-
-              {firstSemester.length !== 0 ? (
-                <SemesterResult semesterName="First" course={firstSemester} />
-              ) : (
-                ""
-              )}
-              {secondSemester.length !== 0 ? (
-                <SemesterResult semesterName="Second" course={secondSemester} />
-              ) : (
-                ""
-              )}
-              {thirdSemester.length !== 0 ? (
-                <SemesterResult semesterName="Third" course={thirdSemester} />
-              ) : (
-                ""
-              )}
-              {fourthSemester.length !== 0 ? (
-                <SemesterResult semesterName="Fourth" course={fourthSemester} />
-              ) : (
-                ""
-              )}
-              {fivethSemester.length !== 0 ? (
-                <SemesterResult semesterName="Fiveth" course={fivethSemester} />
-              ) : (
-                ""
-              )}
-              {sixthSemester.length !== 0 ? (
-                <SemesterResult semesterName="Sixth" course={sixthSemester} />
-              ) : (
-                ""
-              )}
-              {seventhSemester.length !== 0 ? (
-                <SemesterResult
-                  semesterName="Seventh"
-                  course={seventhSemester}
-                />
-              ) : (
-                ""
-              )}
-              {finalSemester.length !== 0 ? (
-                <SemesterResult semesterName="Final" course={finalSemester} />
-              ) : (
-                ""
-              )}
+              {courseRender}
+            
               {CGPA ? (
                 <div>
                   <div className="row">

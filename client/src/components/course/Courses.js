@@ -9,7 +9,7 @@ import {
 } from "../../actions/profileActions";
 import Spinner from "../common/Spinner";
 import SemesterResult from "../semester/SemesterResult";
-// import PerformChecks from "./PerformChecks";
+import Check from '../Check';
 
 class Courses extends Component {
   componentDidMount() {
@@ -28,29 +28,12 @@ class Courses extends Component {
     let coursesContent;
 
     if (profile === null) {
-      coursesContent = (
-        <div className="col-md-12 m-auto">
-          <Spinner />
-        </div>
-      );
+      coursesContent = <Check flag={1} />
     } else if (profile.noprofile) {
-      coursesContent = (
-        <div className="row text-center">
-          <div class="col-md-12">
-            <h3 className="mb-4">You need to have profile created first</h3>
-            <Link className="btn btn-large btn-info" to="/createProfile">
-              Create Profile
-            </Link>
-          </div>
-        </div>
-      );
+      coursesContent = <Check flag={2} />
     } else {
       if (courses === null || loading) {
-        coursesContent = (
-          <div className="col-md-12 m-auto">
-            <Spinner />
-          </div>
-        );
+        coursesContent = <Check flag={1} />
       } else {
         if (Object.keys(courses).length > 0) {
           let firstSemester = courses.filter(
@@ -179,43 +162,6 @@ class Courses extends Component {
               )}
             </div>
           );
-
-          // coursesContent = (
-          //   <div>
-          //     <div className="row">
-          //       <h2 className="col-md-6 mb-4">Courses</h2>
-          //       <div className="col-md-6">
-          //         <Link
-          //           to="/profile/courses/attendance"
-          //           className="btn btn-success mr-2 col-md-4 col-sm-12"
-          //         >
-          //           Overall Attendance
-          //         </Link>
-          //         <Link
-          //           to="/profile/addCourse"
-          //           className="btn btn-success col-md-4 col-sm-12 "
-          //         >
-          //           Add Course
-          //         </Link>
-          //       </div>
-          //     </div>
-          //     <table className="table table-sm table-responsive-sm">
-          //       <thead>
-          //         <tr>
-          //           <th>#</th>
-          //           <th>Name</th>
-          //           <th>Code</th>
-          //           <th>Credit Hours</th>
-          //           <th>Teacher</th>
-          //           <th>Sem</th>
-          //           <th>Attendance</th>
-          //           <th>Actions</th>
-          //         </tr>
-          //       </thead>
-          //       <tbody>{allCourses}</tbody>
-          //     </table>
-          //   </div>
-          // );
         } else {
           coursesContent = (
             <div className="col-md-12 m-auto text-center">

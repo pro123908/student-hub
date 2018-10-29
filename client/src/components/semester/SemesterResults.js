@@ -6,6 +6,7 @@ import { getCourses, getProfile } from "../../actions/profileActions";
 import SemesterResult from "./SemesterResult";
 import Spinner from "../common/Spinner";
 import Chart from "../layout/Chart";
+import Check from "../Check";
 
 class SemesterResults extends Component {
   componentDidMount() {
@@ -91,29 +92,12 @@ class SemesterResults extends Component {
       chart;
 
     if (profile === null) {
-      semesterContent = (
-        <div className="col-md-12 m-auto">
-          <Spinner />
-        </div>
-      );
+      semesterContent = <Check  flag={1}/>
     } else if (profile.noprofile) {
-      semesterContent = (
-        <div className="row text-center">
-          <div class="col-md-12">
-            <h3 className="mb-4">You need to have profile created first</h3>
-            <Link className="btn btn-large btn-info" to="/createProfile">
-              Create Profile
-            </Link>
-          </div>
-        </div>
-      );
+      semesterContent = <Check  flag={2}/>
     } else {
       if (courses === null || loading) {
-        semesterContent = (
-          <div className="col-md-8 m-auto">
-            <Spinner />
-          </div>
-        );
+        semesterContent = <Check  flag={1}/>
       } else {
         if (Object.keys(courses).length > 0) {
           const gpaCourses = courses.filter(course => course.GPA !== 0);

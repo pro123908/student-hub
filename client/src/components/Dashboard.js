@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getProfile, getCourses } from "../actions/profileActions";
 import Spinner from "./common/Spinner";
+import Check from './Check';
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -16,25 +17,10 @@ class Dashboard extends Component {
     let dashboardContent;
 
     if (profile === null || loading) {
-      dashboardContent = (
-        <div className="row">
-          <div className="col-md-12 m-auto">
-            <Spinner />
-          </div>
-        </div>
-      );
+      dashboardContent = <Check flag={1}/>
     } else {
       if (profile.noprofile) {
-        dashboardContent = (
-          <div className="row text-center">
-            <div class="col-md-12">
-              <h3 className="mb-4">Create Your Profile</h3>
-              <Link className="btn btn-large btn-info" to="/createProfile">
-                Create Profile
-              </Link>
-            </div>
-          </div>
-        );
+        dashboardContent = <Check flag={2} />
       } else {
         dashboardContent = (
           <div>

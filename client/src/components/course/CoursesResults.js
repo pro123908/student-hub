@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Spinner from "../common/Spinner";
 import CourseItem from "./CourseItem";
 import { getCourses, getProfile } from "../../actions/profileActions";
+import Check from '../Check';
 
 class CoursesResults extends Component {
   componentDidMount() {
@@ -17,29 +18,12 @@ class CoursesResults extends Component {
 
     let coursesContent;
     if (profile === null) {
-      coursesContent = (
-        <div className="col-md-12 m-auto">
-          <Spinner />
-        </div>
-      );
+      coursesContent = <Check flag={1} />
     } else if (profile.noprofile) {
-      coursesContent = (
-        <div className="row text-center">
-          <div class="col-md-12">
-            <h3 className="mb-4">You need to have profile created first</h3>
-            <Link className="btn btn-large btn-info" to="/createProfile">
-              Create Profile
-            </Link>
-          </div>
-        </div>
-      );
+      coursesContent = <Check flag={2} />
     } else {
       if (courses === null || loading) {
-        coursesContent = (
-          <div className="col-md-12 m-auto">
-            <Spinner />
-          </div>
-        );
+        coursesContent = <Check flag={1} />
       } else {
         if (Object.keys(courses).length > 0) {
           let isGPA = courses.filter(course => course.GPA !== 0);

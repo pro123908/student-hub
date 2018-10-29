@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { getCourses, getProfile } from "../../actions/profileActions";
-import Spinner from "../common/Spinner";
 import SemesterCourse from "./SemesterCourse";
+import Check from "../Check";
 
 class CurrentSemester extends Component {
   componentDidMount() {
@@ -40,29 +40,12 @@ class CurrentSemester extends Component {
     let currentSemesterContent;
 
     if (profile === null) {
-      currentSemesterContent = (
-        <div className="col-md-12 m-auto">
-          <Spinner />
-        </div>
-      );
+      currentSemesterContent = <Check flag={1} />
     } else if (profile.noprofile) {
-      currentSemesterContent = (
-        <div className="row text-center">
-          <div class="col-md-12">
-            <h3 className="mb-4">You need to have profile created first</h3>
-            <Link className="btn btn-large btn-info" to="/createProfile">
-              Create Profile
-            </Link>
-          </div>
-        </div>
-      );
+      currentSemesterContent = <Check flag={2} />
     } else {
       if (courses === null || loading) {
-        currentSemesterContent = (
-          <div className="col-md-8 m-auto">
-            <Spinner />
-          </div>
-        );
+        currentSemesterContent = <Check flag={1} />
       } else {
         if (Object.keys(courses).length > 0) {
           let currentSem = profile.semester.split(" ")[0];

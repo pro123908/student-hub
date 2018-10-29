@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import { editCourse, getCourse } from "../../actions/profileActions";
 import TextFieldGroup from "../common/TextFieldGroup";
 import SelectListGroup from "../common/SelectListGroup";
-import Spinner from "../common/Spinner";
 import Courses from "./courses.json";
+import Check from "../Check";
 
 class EditCourse extends Component {
   constructor(props) {
@@ -64,7 +64,7 @@ class EditCourse extends Component {
         course => course.name === this.state.name
       ).map(course => course.ch);
 
-      gpa = parseFloat(this.state.GPA) / parseInt(result);
+      gpa = parseFloat(this.state.GPA) / parseInt(result,10);
     }
 
     const editCourse = {
@@ -101,11 +101,7 @@ class EditCourse extends Component {
 
     let editCourseContent;
     if (course === null || loading) {
-      editCourseContent = (
-        <div className="col-md-8 m-auto">
-          <Spinner />
-        </div>
-      );
+      editCourseContent = <Check flag={1} />
     } else {
       editCourseContent = (
         <div className="col-md-8 m-auto">

@@ -13,9 +13,6 @@ const User = require("../models/User");
 //Validation
 const validateRegisterInputs = require("../validation/register");
 const validateLoginInputs = require("../validation/login");
-const validateUserInfoInputs = require("../validation/userInfo");
-
-router.get("/", (req, res) => res.send("Inside users"));
 
 // @route POST /users/register
 // @desc Registers a user

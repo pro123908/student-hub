@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Moment from "react-moment";
 import {
-  getCourseAttendance,
+  getCourse,
   updateCourseAttendance,
   deleteCourseAttendance
 } from "../../actions/profileActions";
@@ -27,13 +27,12 @@ class CourseAttendance extends Component {
 
   componentDidMount() {
     if (this.props.match.params.courseID) {
-      this.props.getCourseAttendance(this.props.match.params.courseID);
+      this.props.getCourse(this.props.match.params.courseID);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.profile.course) {
-      console.log(nextProps.profile.course.attendance);
       let attendance = nextProps.profile.course.attendance;
       this.setState({
         chartData: {
@@ -177,7 +176,7 @@ class CourseAttendance extends Component {
 
 CourseAttendance.propTypes = {
   profile: PropTypes.object.isRequired,
-  getCourseAttendance: PropTypes.func.isRequired,
+  getCourse: PropTypes.func.isRequired,
   updateCourseAttendance: PropTypes.func.isRequired,
   deleteCourseAttendance: PropTypes.func.isRequired
 };
@@ -188,5 +187,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getCourseAttendance, updateCourseAttendance, deleteCourseAttendance }
+  { getCourse, updateCourseAttendance, deleteCourseAttendance }
 )(CourseAttendance);

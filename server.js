@@ -28,6 +28,9 @@ app.use(passport.initialize());
 //passport config file
 require("./config/passport.js")(passport);
 
+//Redis
+require('./config/cache');
+
 //Assigning routes
 app.use("/users", users);
 app.use("/profile", profile);

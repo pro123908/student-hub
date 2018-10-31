@@ -46,7 +46,7 @@ export const getProfile = () => dispatch => {
 export const addCourse = (courseData, history) => dispatch => {
   axios
     .post("/profile/course/add", courseData)
-    .then(res => history.push("/profile/courses"))
+    .then(() => history.push("/profile/courses"))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -58,7 +58,7 @@ export const addCourse = (courseData, history) => dispatch => {
 export const editCourse = (courseData, id, history) => dispatch => {
   axios
     .post(`/profile/courses/edit/${id}`, courseData)
-    .then(res => history.push("/profile/courses"))
+    .then(() => history.push("/profile/courses"))
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -116,24 +116,6 @@ export const getCourses = () => dispatch => {
       dispatch({
         type: GET_COURSES,
         payload: null
-      })
-    );
-};
-
-export const getCourseAttendance = courseID => dispatch => {
-  dispatch(setCourseLoading());
-  axios
-    .get(`/profile/courses/attendance/${courseID}`)
-    .then(res =>
-      dispatch({
-        type: GET_COURSE,
-        payload: res.data
-      })
-    )
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
       })
     );
 };

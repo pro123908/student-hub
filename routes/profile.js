@@ -51,12 +51,14 @@ router.post(
           }
 
           //Creating new profile with all the properties
-          new Profile(profileFields).save().then(profile => res.json(profile));
+          new Profile(profileFields).save().then(() => res.json({success:true}));
         });
       }
     });
   }
 );
+
+  
 
 // @route GET /profile/
 // @desc Get user profile
@@ -69,19 +71,10 @@ router.get(
       .populate("user", ["name", "avatar", "email"]) // Adding properties
       .then(profile => {
         if (profile) {
-          // Calculating CGPA to display on profile
-          let CGPA = 0;
-          // if profile has any courses?
-          if (Object.keys(profile.courses).length > 0) {
-            //Filtering the courses to find those which have GPA 
-            const gpaCourses = profile.courses.filter(
-              course => course.GPA !== 0
-            );
-            if (gpaCourses.length > 0) {
-              // Calling the function if there are any GPA courses
-              CGPA = getCGPA(gpaCourses);
-            }
-          }
+         
+          //Calculating the CGPA
+          const CGPA = getCGPA(profile.courses);
+        
 
           // Making the profile object with all the required info to send as a response
           const userProfile = {
@@ -132,7 +125,7 @@ router.post(
 
         profile
           .save()
-          .then(profile => res.json(profile))
+          .then(() => res.json({success:true}))
           .catch(err => res.json(err));
       })
       .catch(err => res.json(err));
@@ -165,9 +158,45 @@ router.post(
         profile.courses[course].semester = req.body.semester;
         if (req.body.gpa) profile.courses[course].GPA = req.body.gpa;
 
-        profile.save().then(profile => res.json(profile));
+        profile.save().then(() => res.json({success:true}));
       })
       .catch(err => res.json(err));
+  }
+);
+
+
+// @route DELETE /profile/courses/:courseID
+// @desc deletes a course
+// @access Private
+router.delete(
+  "/courses/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const removeIndex = profile.courses
+        .map(course => course.id)
+        .indexOf(req.params.courseID);
+
+      profile.courses.splice(removeIndex, 1);
+
+      profile.save().then(profile => res.json(profile.courses));
+    });
+  }
+);
+
+// @route GET profile/courses/:courseID
+// @desc Get course by ID
+// @access Private
+router.get(
+  "/courses/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const course = profile.courses.filter(
+        item => item.id === req.params.courseID
+      );
+      res.json(course[0]);
+    });
   }
 );
 
@@ -192,21 +221,65 @@ router.get(
   }
 );
 
-// @route GET profile/courses/:courseID
-// @desc Get course by ID
+
+
+// @route POST profile/courses/attendance/:courseID
+// @desc Update Attendance
 // @access Private
-router.get(
-  "/courses/:courseID",
+router.post(
+  "/courses/attendance/:courseID",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     Profile.findOne({ user: req.user.id }).then(profile => {
-      const course = profile.courses.filter(
-        item => item.id === req.params.courseID
-      );
-      res.json(course[0]);
+      const courseIndex = profile.courses
+        .map(item => item.id)
+        .indexOf(req.params.courseID);
+
+      let record = profile.courses[courseIndex].attendance;
+
+      const attendance = {};
+
+      if (record.classesHeld) {
+        attendance.classesHeld = record.classesHeld + Number(req.body.held);
+        attendance.classesTaken = record.classesTaken + Number(req.body.taken);
+        attendance.classesLeft = record.classesLeft + Number(req.body.left);
+        attendance.date = Date.now();
+      } else {
+        attendance.classesHeld = Number(req.body.held);
+        attendance.classesTaken = Number(req.body.taken);
+        attendance.classesLeft = Number(req.body.left);
+        attendance.date = Date.now();
+      }
+
+      profile.courses[courseIndex].attendance = attendance;
+      profile.save().then(profile => res.json(profile.courses[courseIndex]));
     });
   }
 );
+
+// @route DELETE /profile/courses/attendance/:courseID
+// @desc Deletes course attendance
+// @access Private
+router.delete(
+  "/courses/attendance/:courseID",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const courseIndex = profile.courses
+        .map(course => course.id)
+        .indexOf(req.params.courseID);
+
+      profile.courses[courseIndex].attendance = {
+        classesHeld: 0,
+        classesTaken: 0,
+        classesLeft: 0
+      };
+
+      profile.save().then(profile => res.json(profile.courses[courseIndex]));
+    });
+  }
+);
+
 
 // @route GET profile/courses/attendance/semester/:semester
 // @desc Get Semester attendance
@@ -261,64 +334,13 @@ router.delete(
           classesLeft: 0
         };
 
-        profile.save().then(profile => res.json(updatedSemester));
+        profile.save().then(() => res.json(updatedSemester));
       })
       .catch(err => res.status(400).json(err));
   }
 );
 
-// @route POST profile/courses/attendance/:courseID
-// @desc Update Attendance
-// @access Private
-router.post(
-  "/courses/attendance/:courseID",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      const courseIndex = profile.courses
-        .map(item => item.id)
-        .indexOf(req.params.courseID);
 
-      let record = profile.courses[courseIndex].attendance;
-
-      const attendance = {};
-
-      if (record.classesHeld) {
-        attendance.classesHeld = record.classesHeld + Number(req.body.held);
-        attendance.classesTaken = record.classesTaken + Number(req.body.taken);
-        attendance.classesLeft = record.classesLeft + Number(req.body.left);
-        attendance.date = Date.now();
-      } else {
-        attendance.classesHeld = Number(req.body.held);
-        attendance.classesTaken = Number(req.body.taken);
-        attendance.classesLeft = Number(req.body.left);
-        attendance.date = Date.now();
-      }
-
-      profile.courses[courseIndex].attendance = attendance;
-      profile.save().then(profile => res.json(profile.courses[courseIndex]));
-    });
-  }
-);
-
-// @route POST profile/courses/attendance/:courseID
-// @desc get courses Attendance
-// @access Private
-router.get(
-  "/courses/attendance/:courseID",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id })
-      .then(profile => {
-        const course = profile.courses.filter(
-          item => item.id === req.params.courseID
-        );
-
-        res.json(course[0]);
-      })
-      .catch(err => res.status(400).json(err));
-  }
-);
 
 // @route GET profile/courses/attendance
 // @desc Get overall attendance
@@ -347,47 +369,6 @@ router.get(
   }
 );
 
-// @route DELETE /profile/courses/attendance/:courseID
-// @desc Deletes course attendance
-// @access Private
-router.delete(
-  "/courses/attendance/:courseID",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      const courseIndex = profile.courses
-        .map(course => course.id)
-        .indexOf(req.params.courseID);
-
-      profile.courses[courseIndex].attendance = {
-        classesHeld: 0,
-        classesTaken: 0,
-        classesLeft: 0
-      };
-
-      profile.save().then(profile => res.json(profile.courses[courseIndex]));
-    });
-  }
-);
-
-// @route DELETE /profile/courses/:courseID
-// @desc deletes a course
-// @access Private
-router.delete(
-  "/courses/:courseID",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      const removeIndex = profile.courses
-        .map(course => course.id)
-        .indexOf(req.params.courseID);
-
-      profile.courses.splice(removeIndex, 1);
-
-      profile.save().then(profile => res.json(profile.courses));
-    });
-  }
-);
 
 // @route GET /profile/courses/results/semester
 // @desc Get semester wise result
@@ -406,7 +387,23 @@ router.get(
   }
 );
 
-function getCGPA(course) {
+function getCGPA(courses){ // Calculating CGPA to display on profile
+  let CGPA = 0;
+  // if profile has any courses?
+  if (Object.keys(courses).length > 0) {
+    //Filtering the courses to find those which have GPA 
+    const gpaCourses = courses.filter(
+      course => course.GPA !== 0
+    );
+    if (gpaCourses.length > 0) {
+      // Calling the function if there are any GPA courses
+      CGPA = calculateCGPA(gpaCourses);
+      return CGPA;
+    }
+  }
+}
+
+function calculateCGPA(course) {
   let GPAs = course.map(course => course.GPA);
   let creditHours = course.map(course => course.ch);
 
